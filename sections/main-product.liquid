@@ -1,0 +1,1009 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign compare_at_price = current_variant.compare_at_price
+  assign price = current_variant.price
+  assign price_discount = 0
+
+  if compare_at_price > price
+    assign price_discount = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round
+  endif
+-%}
+
+<!-- Product Slider Start -->
+<div
+  class="main-product-section overflow-hidden"
+  id="main-product-{{ section.id }}"
+  style="
+    background-color: {{ section.settings.background_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+  data-section-id="{{ section.id }}"
+>
+  <div class="container-fluid">
+    <div class="max-w-[1720px] mx-auto flex justify-between gap-10 flex-col lg:flex-row">
+      <div class="w-full lg:w-[58%]">
+        <div class="relative product-dtls-wrapper">
+          {% if compare_at_price > price %}
+            <span class="absolute top-5 left-0 z-50 p-2 bg-[#E13939] text-lg leading-none text-white font-medium" data-gallery-discount>
+              -{{ price_discount }}%
+            </span>
+          {% else %}
+            <span class="absolute top-5 left-0 z-50 p-2 bg-[#E13939] text-lg leading-none text-white font-medium hidden" data-gallery-discount></span>
+          {% endif %}
+          {% if compare_at_price <= price and section.settings.show_sale_badge %}
+            <span class="absolute top-5 left-0 z-50 p-2 bg-[#E13939] text-lg leading-none text-white font-medium">
+              {{ section.settings.sale_badge_text }}
+            </span>
+          {% endif %}
+
+          {% render 'product-gallery', product: product, section_id: section.id %}
+        </div>
+      </div>
+
+      <div class="lg:max-w-[635px] w-full text-white">
+        <div class="pb-4 sm:pb-6 border-b border-white/15">
+          <h2 class="font-semibold leading-none text-2xl sm:text-3xl lg:text-4xl text-white">
+            {{ product.title }}
+          </h2>
+
+          <div class="flex gap-4 items-center flex-wrap mt-[15px]" data-product-price>
+            {% if compare_at_price > price %}
+              <span class="text-lg sm:text-xl leading-none pb-[5px] line-through inline-block text-white/70" data-compare-price>
+                {{ compare_at_price | money }}
+              </span>
+            {% else %}
+              <span class="text-lg sm:text-xl leading-none pb-[5px] line-through inline-block text-white/70 hidden" data-compare-price></span>
+            {% endif %}
+            <span class="text-2xl sm:text-3xl text-primary leading-none block" data-product-price-value>
+              {{ price | money }}
+            </span>
+            <span
+              class="px-2 py-1 bg-[#E13939] text-sm sm:text-base leading-none text-white font-medium{% unless compare_at_price > price %} hidden{% endunless %}"
+              data-discount-badge
+            >
+              -{{ price_discount }}%
+            </span>
+          </div>
+
+          {% if section.settings.show_countdown and section.settings.sale_end_date != blank %}
+            {% render 'product-hot-deal', sale_end_date: section.settings.sale_end_date, section_id: section.id %}
+          {% endif %}
+
+          {% if product.description != blank %}
+            <div class="sm:text-lg mt-5 md:mt-7 text-white/80 product-description rte">
+              {{ product.description }}
+            </div>
+          {% elsif section.settings.fallback_description != blank %}
+            <p class="sm:text-lg mt-5 md:mt-7 text-white/80">
+              {{ section.settings.fallback_description }}
+            </p>
+          {% endif %}
+        </div>
+
+        {% capture product_form_id %}product-form-{{ section.id }}{% endcapture %}
+        {% form 'product', product, id: product_form_id, class: 'product-form' %}
+          <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+          {% render 'product-quantity', product: product, section_id: section.id %}
+
+          <div class="py-4 sm:py-6 border-b border-white/15">
+            {% render 'product-variant-picker', product: product, section_id: section.id %}
+          </div>
+        {% endform %}
+
+        <div class="py-4 sm:py-6 border-b border-white/15">
+          <h4 class="font-medium leading-none text-white">Tags :</h4>
+          {% render 'product-tags', product: product %}
+        </div>
+
+        <div class="pt-4 sm:pt-6">
+          <div class="flex items-center gap-6">
+            <h6 class="font-normal text-white">Share :</h6>
+            {% render 'product-share', product: product %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="max-w-[1720px] mx-auto">
+      {% render 'product-details-tabs', product: product, section: section, section_id: section.id %}
+    </div>
+  </div>
+
+  <script type="application/json" data-product-data>
+    {
+      "variants": [
+        {%- for variant in product.variants -%}
+          {
+            "id": {{ variant.id }},
+            "available": {{ variant.available | json }},
+            "price": {{ variant.price }},
+            "compare_at_price": {{ variant.compare_at_price | json }},
+            "sku": {{ variant.sku | json }},
+            "options": {{ variant.options | json }},
+            "featured_media_id": {% if variant.featured_media %}{{ variant.featured_media.id }}{% else %}null{% endif %}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "media": [
+        {%- for media in product.media -%}
+          {
+            "id": {{ media.id }},
+            "src": {{ media | image_url: width: 1200 | json }},
+            "thumb": {{ media | image_url: width: 220 | json }},
+            "alt": {{ media.alt | default: product.title | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+</div>
+<!-- Product Slider End -->
+
+{% stylesheet %}
+  .main-product-section .product-dtls-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .main-product-section .product-dtls-wrapper {
+      gap: 1.25rem;
+    }
+  }
+
+  .main-product-section .product-dtls-slider {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .main-product-section .product-dtls-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 88px;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .main-product-section .product-dtls-nav {
+      width: 110px;
+    }
+  }
+
+  .main-product-section .product-dtls-thumb {
+    border: 2px solid transparent;
+    background: #f0f0f0;
+    padding: 0;
+    cursor: pointer;
+    transition: border-color 0.3s ease, opacity 0.3s ease;
+    opacity: 0.75;
+  }
+
+  .main-product-section .product-dtls-thumb.is-active,
+  .main-product-section .product-dtls-thumb:hover {
+    border-color: #fff;
+    opacity: 1;
+  }
+
+  .main-product-section .product-dtls-main-image {
+    background: #f0f0f0;
+    overflow: hidden;
+  }
+
+  .main-product-section .product-size,
+  .main-product-section .product-color {
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+  }
+
+  .main-product-section .product-size input:checked + span,
+  .main-product-section .product-size input:checked + .size-label {
+    background-color: var(--color-primary, #c8815f);
+    color: #fff;
+  }
+
+  .main-product-section .product-color input:checked + .color-swatch-ring {
+    border-color: var(--swatch-color) !important;
+  }
+
+  .main-product-section .product-color input:disabled + span,
+  .main-product-section .product-size input:disabled + span,
+  .main-product-section .product-size input:disabled + .size-label,
+  .main-product-section .product-color.is-disabled,
+  .main-product-section .product-size.is-disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .main-product-section .product-dtls-thumb {
+    cursor: pointer;
+  }
+
+  .main-product-section .btn-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    background: #fff;
+    color: #111827;
+    border: 1px solid #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .main-product-section .btn-solid:hover {
+    background: var(--color-primary, #c8815f);
+    border-color: var(--color-primary, #c8815f);
+    color: #fff;
+  }
+
+  .main-product-section .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .main-product-section .btn-outline:hover {
+    background: var(--color-primary, #c8815f);
+    border-color: var(--color-primary, #c8815f);
+    color: #fff;
+  }
+
+  .main-product-section .btn-theme-outline.btn-xs {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px 9px ; 
+    font-size: 14px;
+    line-height: 100%;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .main-product-section .btn-theme-outline.btn-xs:hover {
+    border-color: var(--color-primary, #c8815f);
+    color: var(--color-primary, #c8815f);
+  }
+
+  .main-product-section .inc-dec .dec,
+  .main-product-section .inc-dec .inc {
+    cursor: pointer;
+    border: none;
+  }
+
+  .main-product-section .product-description p {
+    margin: 0;
+  }
+
+  .main-product-section .product-form {
+    margin: 0;
+  }
+
+  .main-product-section .product-dtls-navtab li.active::before {
+    opacity: 1;
+  }
+
+  .main-product-section .product-dtls-navtab li.active a {
+    color: var(--color-primary, #c8815f);
+  }
+
+  .main-product-section .product-tab-description p {
+    margin: 0 0 1rem;
+  }
+
+  .main-product-section .product-tab-description p:last-child {
+    margin-bottom: 0;
+  }
+{% endstylesheet %}
+
+<script>
+  (function () {
+    var sectionId = '{{ section.id }}';
+    var root = document.getElementById('main-product-' + sectionId);
+    if (!root) return;
+
+    var dataEl = root.querySelector('[data-product-data]');
+    var productData = dataEl ? JSON.parse(dataEl.textContent) : { variants: [], media: [] };
+    var variants = productData.variants || [];
+    var productMedia = productData.media || [];
+
+    var form = document.getElementById('product-form-{{ section.id }}');
+    var variantInput = form ? form.querySelector('[data-variant-id]') : null;
+    var priceEl = root.querySelector('[data-product-price-value]');
+    var compareEl = root.querySelector('[data-compare-price]');
+    var discountEl = root.querySelector('[data-discount-badge]');
+    var galleryDiscountEl = root.querySelector('[data-gallery-discount]');
+    var skuEl = root.querySelector('[data-variant-sku]');
+    var submitBtn = form ? form.querySelector('[type="submit"]') : null;
+    var submitText = submitBtn ? submitBtn.querySelector('span') : null;
+    var mainImage = root.querySelector('[data-main-image]');
+    var thumbs = Array.prototype.slice.call(root.querySelectorAll('[data-gallery-thumb]'));
+    var optionInputs = Array.prototype.slice.call(root.querySelectorAll('[data-product-option]'));
+    var quantityInput = root.querySelector('[data-quantity-input]');
+    var decBtn = root.querySelector('[data-quantity-dec]');
+    var incBtn = root.querySelector('[data-quantity-inc]');
+
+    function getVisibleSelectedOptions() {
+      var selected = {};
+      optionInputs.forEach(function (input) {
+        if (input.dataset.optionHidden === 'true') return;
+        if (input.type === 'radio' && !input.checked) return;
+        if (input.dataset.optionIndex) {
+          selected[input.dataset.optionIndex] = input.value;
+        }
+      });
+      return selected;
+    }
+
+    function getSelectedOptions() {
+      var selected = getVisibleSelectedOptions();
+      optionInputs.forEach(function (input) {
+        if (input.dataset.optionHidden !== 'true') return;
+        if (input.dataset.optionIndex) {
+          selected[input.dataset.optionIndex] = input.value;
+        }
+      });
+      return selected;
+    }
+
+    function findVariant() {
+      var selected = getVisibleSelectedOptions();
+      var selectedKeys = Object.keys(selected);
+
+      if (selectedKeys.length === 0) {
+        return variants[0] || null;
+      }
+
+      return variants.find(function (variant) {
+        return selectedKeys.every(function (key) {
+          var index = parseInt(key, 10) - 1;
+          return variant.options[index] === selected[key];
+        });
+      }) || null;
+    }
+
+    function syncHiddenOptions(variant) {
+      if (!variant) return;
+      optionInputs.forEach(function (input) {
+        if (input.dataset.optionHidden !== 'true') return;
+        var index = parseInt(input.dataset.optionIndex, 10) - 1;
+        input.value = variant.options[index] || input.value;
+      });
+    }
+
+    function formatMoney(cents) {
+      if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
+        return window.Shopify.formatMoney(cents, {{ shop.money_format | json }});
+      }
+      return (cents / 100).toFixed(2);
+    }
+
+    function getMediaIdFromVariant(variant) {
+      if (!variant) return null;
+
+      if (variant.featured_media_id) {
+        return variant.featured_media_id;
+      }
+
+      if (variant.featured_media) {
+        if (typeof variant.featured_media === 'object' && variant.featured_media.id) {
+          return variant.featured_media.id;
+        }
+        if (typeof variant.featured_media === 'number') {
+          return variant.featured_media;
+        }
+      }
+
+      if (variant.featured_image && variant.featured_image.id) {
+        return variant.featured_image.id;
+      }
+
+      return null;
+    }
+
+    function setMainImageSrc(src, alt, mediaId) {
+      if (!mainImage || !src) return false;
+
+      mainImage.src = src;
+      mainImage.alt = alt || '';
+      if (mediaId) mainImage.dataset.mediaId = String(mediaId);
+      mainImage.removeAttribute('srcset');
+      mainImage.removeAttribute('sizes');
+      return true;
+    }
+
+    function setMainImageByMediaId(mediaId) {
+      if (!mediaId || !mainImage) return false;
+
+      var media = productMedia.find(function (item) {
+        return String(item.id) === String(mediaId);
+      });
+
+      var src = media ? media.src : '';
+      var alt = media ? media.alt : '';
+
+      if (!src) {
+        var matchedThumb = thumbs.find(function (thumb) {
+          return String(thumb.dataset.mediaId) === String(mediaId);
+        });
+        if (matchedThumb) {
+          src = matchedThumb.dataset.imageSrc || '';
+          alt = matchedThumb.dataset.imageAlt || alt;
+        }
+      }
+
+      if (!setMainImageSrc(src, alt, mediaId)) return false;
+
+      thumbs.forEach(function (thumb) {
+        var isActive = String(thumb.dataset.mediaId) === String(mediaId);
+        thumb.classList.toggle('is-active', isActive);
+      });
+
+      return true;
+    }
+
+    function getDiscountPercent(comparePrice, currentPrice) {
+      if (!comparePrice || comparePrice <= currentPrice) return 0;
+      return Math.round((comparePrice - currentPrice) * 100 / comparePrice);
+    }
+
+    function updateVariantUI(variant) {
+      if (!variant) return;
+
+      syncHiddenOptions(variant);
+
+      if (variantInput) variantInput.value = variant.id;
+      if (priceEl) priceEl.textContent = formatMoney(variant.price);
+
+      var discount = getDiscountPercent(variant.compare_at_price, variant.price);
+
+      if (compareEl) {
+        if (discount > 0) {
+          compareEl.textContent = formatMoney(variant.compare_at_price);
+          compareEl.classList.remove('hidden');
+        } else {
+          compareEl.classList.add('hidden');
+        }
+      }
+
+      if (discountEl) {
+        if (discount > 0) {
+          discountEl.textContent = '-' + discount + '%';
+          discountEl.classList.remove('hidden');
+        } else {
+          discountEl.classList.add('hidden');
+        }
+      }
+
+      if (galleryDiscountEl) {
+        if (discount > 0) {
+          galleryDiscountEl.textContent = '-' + discount + '%';
+          galleryDiscountEl.classList.remove('hidden');
+        } else {
+          galleryDiscountEl.classList.add('hidden');
+        }
+      }
+
+      if (skuEl) skuEl.textContent = variant.sku || 'N/A';
+
+      if (submitBtn && submitText) {
+        if (variant.available) {
+          submitBtn.disabled = false;
+          submitText.textContent = 'Add to Cart';
+        } else {
+          submitBtn.disabled = true;
+          submitText.textContent = 'Sold out';
+        }
+      }
+
+      var mediaId = getMediaIdFromVariant(variant);
+      if (mediaId) {
+        setMainImageByMediaId(mediaId);
+      }
+
+      updateOptionAvailability(variant);
+    }
+
+    function updateOptionAvailability(currentVariant) {
+      if (!currentVariant) return;
+
+      optionInputs.forEach(function (input) {
+        if (input.dataset.optionHidden === 'true') return;
+
+        var optionIndex = parseInt(input.dataset.optionIndex, 10) - 1;
+        var testOptions = currentVariant.options.slice();
+        testOptions[optionIndex] = input.value;
+
+        var hasMatch = variants.some(function (item) {
+          return item.options.every(function (option, idx) {
+            return option === testOptions[idx];
+          });
+        });
+
+        if (input.type === 'radio') {
+          input.disabled = !hasMatch;
+          var label = input.closest('label');
+          if (label) label.classList.toggle('is-disabled', !hasMatch);
+        }
+      });
+    }
+
+    function onOptionChange() {
+      var variant = findVariant();
+      updateVariantUI(variant);
+    }
+
+    thumbs.forEach(function (thumb) {
+      thumb.addEventListener('click', function (event) {
+        event.preventDefault();
+        var mediaId = thumb.dataset.mediaId;
+
+        if (mediaId) {
+          setMainImageByMediaId(mediaId);
+        } else if (thumb.dataset.imageSrc) {
+          if (setMainImageSrc(thumb.dataset.imageSrc, thumb.dataset.imageAlt || '', '')) {
+            thumbs.forEach(function (item) {
+              item.classList.toggle('is-active', item === thumb);
+            });
+          }
+        }
+      });
+    });
+
+    optionInputs.forEach(function (input) {
+      input.addEventListener('change', onOptionChange);
+    });
+
+    if (form) {
+      form.addEventListener('click', function (event) {
+        var label = event.target.closest('label.product-size, label.product-color');
+        if (!label) return;
+
+        var input = label.querySelector('[data-product-option]');
+        if (!input || input.disabled) return;
+
+        if (!input.checked) {
+          input.checked = true;
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+          onOptionChange();
+        }
+      });
+    }
+
+    if (decBtn && quantityInput) {
+      decBtn.addEventListener('click', function () {
+        var value = parseInt(quantityInput.value, 10) || 1;
+        quantityInput.value = Math.max(1, value - 1);
+      });
+    }
+
+    if (incBtn && quantityInput) {
+      incBtn.addEventListener('click', function () {
+        var value = parseInt(quantityInput.value, 10) || 1;
+        quantityInput.value = value + 1;
+      });
+    }
+
+    onOptionChange();
+
+    var tabsRoot = root.querySelector('[data-product-details-tabs]');
+    if (tabsRoot) {
+      var tabItems = Array.prototype.slice.call(tabsRoot.querySelectorAll('[data-tab-item]'));
+      var tabLinks = Array.prototype.slice.call(tabsRoot.querySelectorAll('[data-tab-link]'));
+      var tabPanels = Array.prototype.slice.call(tabsRoot.querySelectorAll('[data-tab-panel]'));
+
+      function activateTab(targetId) {
+        tabItems.forEach(function (item) {
+          item.classList.remove('active');
+        });
+
+        tabLinks.forEach(function (link) {
+          link.classList.remove('text-primary');
+          link.classList.add('text-white');
+        });
+
+        tabPanels.forEach(function (panel) {
+          panel.classList.add('hidden');
+          panel.hidden = true;
+        });
+
+        var activeLink = tabLinks.find(function (link) {
+          return link.getAttribute('href') === '#' + targetId;
+        });
+
+        if (!activeLink) return;
+
+        var activeItem = activeLink.closest('[data-tab-item]');
+        var activePanel = tabsRoot.querySelector('#' + targetId);
+
+        if (activeItem) activeItem.classList.add('active');
+        activeLink.classList.add('text-primary');
+        activeLink.classList.remove('text-white');
+
+        if (activePanel) {
+          activePanel.classList.remove('hidden');
+          activePanel.hidden = false;
+        }
+      }
+
+      tabLinks.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+          var targetId = (link.getAttribute('href') || '').replace('#', '');
+          if (targetId) activateTab(targetId);
+        });
+      });
+
+      var initialLink = tabLinks.find(function (link) {
+        return link.closest('[data-tab-item]').classList.contains('active');
+      });
+
+      if (initialLink) {
+        activateTab((initialLink.getAttribute('href') || '').replace('#', ''));
+      }
+    }
+
+    var countdownRoot = root.querySelector('[data-countdown]');
+    if (countdownRoot) {
+      var endDate = new Date(countdownRoot.dataset.endDate).getTime();
+
+      function updateCountdown() {
+        var now = Date.now();
+        var distance = endDate - now;
+
+        if (distance <= 0) {
+          countdownRoot.querySelector('[data-clock-days]').textContent = '00';
+          countdownRoot.querySelector('[data-clock-hours]').textContent = '00';
+          countdownRoot.querySelector('[data-clock-minutes]').textContent = '00';
+          countdownRoot.querySelector('[data-clock-seconds]').textContent = '00';
+          return;
+        }
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownRoot.querySelector('[data-clock-days]').textContent = String(days).padStart(2, '0');
+        countdownRoot.querySelector('[data-clock-hours]').textContent = String(hours).padStart(2, '0');
+        countdownRoot.querySelector('[data-clock-minutes]').textContent = String(minutes).padStart(2, '0');
+        countdownRoot.querySelector('[data-clock-seconds]').textContent = String(seconds).padStart(2, '0');
+      }
+
+      updateCountdown();
+      window.setInterval(updateCountdown, 1000);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Main product",
+  "tag": "section",
+  "class": "main-product-section-wrapper",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#172430"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show sale badge when no compare price",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "sale_badge_text",
+      "label": "Sale badge text",
+      "default": "-10%"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show sale countdown",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sale_end_date",
+      "label": "Sale end date",
+      "info": "Format: YYYY-MM-DD HH:MM",
+      "default": "2026-12-31 23:59"
+    },
+    {
+      "type": "textarea",
+      "id": "fallback_description",
+      "label": "Fallback description",
+      "default": "Experience the epitome of relaxation with our Classic Relaxable Chair. Crafted with plush cushioning and ergonomic design, it offers unparalleled comfort for lounging or reading."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Product details tabs"
+    },
+    {
+      "type": "range",
+      "id": "tabs_padding_top",
+      "label": "Tabs padding top",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "tabs_padding_bottom",
+      "label": "Tabs padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "text",
+      "id": "tab_description_label",
+      "label": "Description tab label",
+      "default": "Description"
+    },
+    {
+      "type": "text",
+      "id": "tab_vendor_label",
+      "label": "Vendor tab label",
+      "default": "Vendor Info"
+    },
+    {
+      "type": "text",
+      "id": "tab_review_label",
+      "label": "Review tab label",
+      "default": "Review"
+    },
+    {
+      "type": "text",
+      "id": "tab_shipping_label",
+      "label": "Shipping tab label",
+      "default": "Shipping"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_product_description",
+      "label": "Use product description in Description tab",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "description_text",
+      "label": "Custom description text",
+      "info": "Used when product description is empty or disabled above."
+    },
+    {
+      "type": "text",
+      "id": "detail_leather",
+      "label": "Detail: Leather",
+      "default": "From Japan"
+    },
+    {
+      "type": "text",
+      "id": "detail_brand",
+      "label": "Detail: Brand",
+      "info": "Leave blank to use product vendor."
+    },
+    {
+      "type": "text",
+      "id": "detail_weight",
+      "label": "Detail: Weight",
+      "default": "1kg"
+    },
+    {
+      "type": "text",
+      "id": "detail_color",
+      "label": "Detail: Color",
+      "info": "Leave blank to use product color options."
+    },
+    {
+      "type": "header",
+      "content": "Vendor tab — Shop 1"
+    },
+    {
+      "type": "text",
+      "id": "vendor_1_label",
+      "label": "Label",
+      "default": "Shop Name"
+    },
+    {
+      "type": "text",
+      "id": "vendor_1_shop",
+      "label": "Shop name",
+      "default": "John Furniture House"
+    },
+    {
+      "type": "text",
+      "id": "vendor_1_name",
+      "label": "Vendor name",
+      "default": "John Smith Doe"
+    },
+    {
+      "type": "text",
+      "id": "vendor_1_address",
+      "label": "Shop address",
+      "default": "West New York, NY, 1234589"
+    },
+    {
+      "type": "text",
+      "id": "vendor_1_email",
+      "label": "Email",
+      "default": "johnmsmith@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "vendor_1_phone",
+      "label": "Phone",
+      "default": "+11 - 01234 5678"
+    },
+    {
+      "type": "header",
+      "content": "Vendor tab — Shop 2"
+    },
+    {
+      "type": "text",
+      "id": "vendor_2_label",
+      "label": "Label",
+      "default": "Shop Name"
+    },
+    {
+      "type": "text",
+      "id": "vendor_2_shop",
+      "label": "Shop name",
+      "default": "Furniture Gallery"
+    },
+    {
+      "type": "text",
+      "id": "vendor_2_name",
+      "label": "Vendor name",
+      "default": "John Smith Doe"
+    },
+    {
+      "type": "text",
+      "id": "vendor_2_address",
+      "label": "Shop address",
+      "default": "West New York, NY, 1234589"
+    },
+    {
+      "type": "text",
+      "id": "vendor_2_email",
+      "label": "Email",
+      "default": "johnmsmith@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "vendor_2_phone",
+      "label": "Phone",
+      "default": "+11 - 01234 5678"
+    },
+    {
+      "type": "header",
+      "content": "Shipping tab"
+    },
+    {
+      "type": "text",
+      "id": "shipping_title_1",
+      "label": "Section 1 title",
+      "default": "For Shipping"
+    },
+    {
+      "type": "textarea",
+      "id": "shipping_text_1",
+      "label": "Section 1 text",
+      "default": "Shipping times may vary based on your location and the selected delivery option. Please review our shipping policies for details on processing times, charges, and tracking updates. Contact us for any shipping-related inquiries or assistance."
+    },
+    {
+      "type": "text",
+      "id": "shipping_title_2",
+      "label": "Section 2 title",
+      "default": "Item Return"
+    },
+    {
+      "type": "textarea",
+      "id": "shipping_text_2",
+      "label": "Section 2 text",
+      "default": "We offer a hassle-free process to ensure your satisfaction. Please review our return policy for eligibility and steps to initiate a return."
+    },
+    {
+      "type": "text",
+      "id": "shipping_title_3",
+      "label": "Section 3 title",
+      "default": "Accepted Problem Issue"
+    },
+    {
+      "type": "textarea",
+      "id": "shipping_text_3",
+      "label": "Section 3 text",
+      "default": "Choose from multiple methods, including credit cards, debit cards, and online payment gateways. All transactions are encrypted to ensure your information remains safe. For any payment-related concerns, our support team is here to assist."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author name",
+          "default": "Merlina Quexy"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review text",
+          "default": "Furnixar's products have transformed my living space with their stylish designs and impeccable craftsmanship."
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 4
+        },
+        {
+          "type": "text",
+          "id": "review_count",
+          "label": "Review count label",
+          "default": "125"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main product"
+    }
+  ]
+}
+{% endschema %}

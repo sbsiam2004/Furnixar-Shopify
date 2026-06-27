@@ -340,3 +340,15 @@ select {
   color: var(--color-primary, #c8815f);
   background-size: 100% 1px;
 }
+
+.inc-dec input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.inc-dec input[type="number"]::-webkit-outer-spin-button,
+.inc-dec input[type="number"]::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}

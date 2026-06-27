@@ -1,0 +1,50 @@
+{%- liquid
+  assign color_map = 'orange:#D68553,blue:#61646E,beige:#E9E3DC,grey:#9A9088,gray:#9A9088,black:#111827,white:#ffffff,red:#E13939,green:#26b295,yellow:#E8C547,purple:#7B5EA7,pink:#E8789A,brown:#8B5E3C,navy:#1E3A5F' | split: ','
+-%}
+
+<div class="flex gap-[10px] items-center flex-wrap">
+  {% for value in option.values %}
+    {%- liquid
+      assign swatch_color = blank
+      if value.swatch.color != blank
+        assign swatch_color = value.swatch.color
+      else
+        assign value_handle = value | downcase | handleize
+        for color_pair in color_map
+          assign pair = color_pair | split: ':'
+          if pair[0] == value_handle
+            assign swatch_color = pair[1]
+            break
+          endif
+        endfor
+      endif
+
+      if swatch_color == blank
+        assign swatch_color = '#61646E'
+      endif
+
+      assign is_checked = false
+      if option.selected_value == value
+        assign is_checked = true
+      endif
+    -%}
+
+    <label class="product-color cursor-pointer">
+      <input
+        class="appearance-none hidden"
+        type="radio"
+        name="options[{{ option.name | escape }}]"
+        value="{{ value | escape }}"
+        data-product-option
+        data-option-index="{{ option.position }}"
+        {% if is_checked %}checked{% endif %}
+      >
+      <span
+        class="color-swatch-ring flex rounded-full border-2 border-transparent p-[3px] duration-300"
+        style="--swatch-color: {{ swatch_color }};"
+      >
+        <span class="w-4 h-4 rounded-full flex shrink-0" style="background-color: {{ swatch_color }};"></span>
+      </span>
+    </label>
+  {% endfor %}
+</div>

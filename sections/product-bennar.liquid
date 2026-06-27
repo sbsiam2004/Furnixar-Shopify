@@ -1,0 +1,27 @@
+<!-- Banner Start -->
+<div class="product-banner-section bg-[#172430] py-5 md:py-[30px]">
+  <div class="container-fluid">
+    <ul class="flex items-center gap-[10px] text-base md:text-lg leading-none max-w-[1720px] mx-auto flex-wrap">
+      <li><a href="{{ routes.root_url }}" class="font-semibold text-white hover:text-primary transition-colors">Home</a></li>
+      <li class="font-normal text-white">/</li>
+      <li><a href="{{ routes.all_products_collection_url }}" class="font-semibold text-white hover:text-primary transition-colors">Shop</a></li>
+      <li class="font-normal text-white">/</li>
+      <li class="text-primary font-normal">{{ product.title }}</li>
+    </ul>
+  </div>
+</div>
+<!-- Banner End -->
+
+{% schema %}
+{
+  "name": "Product banner",
+  "tag": "section",
+  "class": "product-banner-wrapper",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Product banner"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,71 @@
+{%- liquid
+  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+  assign gallery_media = product.media
+  if gallery_media.size == 0
+    assign gallery_media = null
+  endif
+-%}
+
+<div class="product-dtls-slider" data-product-gallery>
+  <div class="product-dtls-main-image">
+    {% if featured_media != blank %}
+      {%- capture main_image_id -%}product-main-image-{{ section_id }}{%- endcapture -%}
+      {{
+        featured_media
+        | image_url: width: 1200
+        | image_tag:
+          class: 'w-full object-cover aspect-square',
+          loading: 'eager',
+          widths: '600, 900, 1200',
+          sizes: '(min-width: 1024px) 58vw, 100vw',
+          alt: product.title,
+          id: main_image_id,
+          data-main-image: true,
+          data-media-id: featured_media.id
+      }}
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag: 'w-full object-cover aspect-square bg-white/10' }}
+    {% endif %}
+  </div>
+</div>
+
+<div class="product-dtls-nav">
+  {% if gallery_media != blank %}
+    {% for media in gallery_media limit: 6 %}
+      <button
+        type="button"
+        class="product-dtls-thumb{% if featured_media.id == media.id %} is-active{% elsif forloop.first and featured_media == blank %} is-active{% endif %}"
+        data-gallery-thumb
+        data-media-id="{{ media.id }}"
+        data-image-src="{{ media | image_url: width: 1200 }}"
+        data-image-alt="{{ media.alt | default: product.title | escape }}"
+        aria-label="View image {{ forloop.index }}"
+      >
+        {{
+          media
+          | image_url: width: 220
+          | image_tag:
+            class: 'w-full object-cover aspect-square pointer-events-none',
+            loading: 'lazy',
+            widths: '110, 220',
+            sizes: '110px',
+            alt: media.alt | default: product.title
+        }}
+      </button>
+    {% endfor %}
+  {% else %}
+    {% for i in (1..4) %}
+      <button
+        type="button"
+        class="product-dtls-thumb{% if forloop.first %} is-active{% endif %}"
+        data-gallery-thumb
+        data-media-id=""
+        data-image-src=""
+        data-image-alt="{{ product.title | escape }}"
+        aria-label="View image {{ forloop.index }}"
+      >
+        {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'w-full object-cover aspect-square bg-white/10 pointer-events-none' }}
+      </button>
+    {% endfor %}
+  {% endif %}
+</div>

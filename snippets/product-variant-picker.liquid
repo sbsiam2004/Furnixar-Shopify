@@ -1,0 +1,79 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_collection = product.collections.first
+-%}
+
+<div class="flex gap-x-12 gap-y-3 flex-wrap">
+  <h6 class="leading-none font-medium text-white">SKU : <span data-variant-sku>{{ current_variant.sku | default: 'N/A' }}</span></h6>
+  <h6 class="leading-none font-medium text-white">
+    Category :
+    {% if product_collection != blank %}
+      <a href="{{ product_collection.url }}" class="text-primary hover:underline">{{ product_collection.title }}</a>
+    {% else %}
+      {{ product.type | default: 'Product' }}
+    {% endif %}
+  </h6>
+</div>
+
+<div class="flex gap-x-12 lg:gap-x-24 gap-y-3 flex-wrap mt-5 sm:mt-10" data-variant-picker>
+  {% for option in product.options_with_values %}
+    {%- liquid
+      assign option_name_downcase = option.name | downcase
+      assign is_color_option = false
+      assign is_hidden_option = false
+
+      if option_name_downcase == 'color' or option_name_downcase == 'colour' or option_name_downcase == 'couleur' or option_name_downcase == 'farbe'
+        assign is_color_option = true
+      endif
+
+      if option_name_downcase == 'title' or option_name_downcase == 'default title'
+        assign is_hidden_option = true
+      endif
+    -%}
+
+    {% if is_hidden_option %}
+      <input
+        type="hidden"
+        name="options[{{ option.name | escape }}]"
+        value="{{ option.selected_value | escape }}"
+        data-product-option
+        data-option-index="{{ option.position }}"
+        data-option-hidden="true"
+      >
+    {% else %}
+      <div class="flex gap-[10px] items-center">
+        <h6 class="leading-none font-medium text-white">{{ option.name }} :</h6>
+
+        {% if is_color_option %}
+          {% render 'product-color', option: option, product: product %}
+        {% else %}
+          <div class="flex gap-[10px] flex-wrap">
+            {% for value in option.values %}
+              {%- liquid
+                assign option_index = option.position
+                assign is_checked = false
+                if option.selected_value == value
+                  assign is_checked = true
+                endif
+              -%}
+              <label class="product-size cursor-pointer">
+                <input
+                  class="appearance-none hidden"
+                  type="radio"
+                  name="options[{{ option.name | escape }}]"
+                  value="{{ value | escape }}"
+                  data-product-option
+                  data-option-index="{{ option_index }}"
+                  {% if is_checked %}checked{% endif %}
+                >
+                <span class="size-label w-6 h-6 flex items-center justify-center pt-[2px] text-sm leading-none bg-[#E8E9EA] dark:bg-dark-secondary text-title dark:text-white duration-300">
+                  {{ value }}
+                </span>
+              </label>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
