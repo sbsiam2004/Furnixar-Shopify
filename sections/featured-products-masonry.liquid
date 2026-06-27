@@ -75,35 +75,6 @@
     padding-bottom: var(--padding-bottom);
   }
 
-  .featured-products-masonry-section .text-underline {
-    position: relative;
-    display: inline-block;
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s ease;
-  }
-
-  .featured-products-masonry-section .text-underline::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 100%;
-    height: 1px;
-    background-color: currentColor;
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 0.3s ease;
-  }
-
-  .featured-products-masonry-section .group:hover .text-underline {
-    color: var(--color-primary, #c8815f);
-  }
-
-  .featured-products-masonry-section .group:hover .text-underline::before {
-    transform: scaleX(1);
-  }
-
   .featured-products-masonry-section .product-card-image {
     display: block;
     transition: transform 0.3s ease;

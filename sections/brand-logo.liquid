@@ -84,10 +84,13 @@
     function BrandLogoSlider(root) {
       this.root = root;
       this.track = root.querySelector('[data-slider-track]');
-      this.slides = this.track ? Array.prototype.slice.call(this.track.querySelectorAll('.brand-logo-slide')) : [];
+      this.slides = this.track ? Array.prototype.slice.call(this.track.querySelectorAll('.brand-logo-slide:not(.brand-logo-slide-clone)')) : [];
+      this.originalSlideCount = this.slides.length;
       this.currentIndex = 0;
       this.autoplayTimer = null;
       this.gap = 30;
+      this.isHovered = false;
+      this.isTransitioning = false;
 
       this.autoplay = root.dataset.autoplay === 'true';
       this.autoplaySpeed = parseInt(root.dataset.autoplaySpeed, 10) || 3000;
@@ -97,8 +100,9 @@
       this.onMouseEnter = this.onMouseEnter.bind(this);
       this.onMouseLeave = this.onMouseLeave.bind(this);
       this.onNext = this.onNext.bind(this);
+      this.onTransitionEnd = this.onTransitionEnd.bind(this);
 
-      if (this.slides.length <= 1) return;
+      if (this.originalSlideCount <= 1) return;
 
       this.init();
     }
@@ -112,82 +116,138 @@
       return 1;
     };
 
-    BrandLogoSlider.prototype.getMaxIndex = function () {
-      return Math.max(0, this.slides.length - this.getSlidesPerView());
+    BrandLogoSlider.prototype.getSlideStep = function () {
+      var slides = this.track.querySelectorAll('.brand-logo-slide');
+      if (!slides.length) return 0;
+      return slides[0].offsetWidth + this.gap;
     };
 
-    BrandLogoSlider.prototype.getSlideStep = function () {
-      if (!this.slides.length) return 0;
-      return this.slides[0].offsetWidth + this.gap;
+    BrandLogoSlider.prototype.cloneSlides = function () {
+      var self = this;
+      this.removeClones();
+
+      this.slides.forEach(function (slide) {
+        var clone = slide.cloneNode(true);
+        clone.classList.add('brand-logo-slide-clone');
+        clone.removeAttribute('data-shopify-editor-block');
+        self.track.appendChild(clone);
+      });
+    };
+
+    BrandLogoSlider.prototype.removeClones = function () {
+      if (!this.track) return;
+      Array.prototype.slice.call(this.track.querySelectorAll('.brand-logo-slide-clone')).forEach(function (clone) {
+        clone.remove();
+      });
     };
 
     BrandLogoSlider.prototype.init = function () {
+      if (this.loop) {
+        this.cloneSlides();
+      }
+
       this.applySlideWidths();
+      this.currentIndex = 0;
       this.goTo(0, false);
       this.bindEvents();
-      if (this.autoplay && this.getMaxIndex() > 0) this.startAutoplay();
+
+      if (this.autoplay) {
+        this.startAutoplay();
+      }
     };
 
     BrandLogoSlider.prototype.applySlideWidths = function () {
       var slidesPerView = this.getSlidesPerView();
       var slideWidth = 'calc((100% - ' + ((slidesPerView - 1) * this.gap) + 'px) / ' + slidesPerView + ')';
+      var allSlides = this.track.querySelectorAll('.brand-logo-slide');
 
-      this.slides.forEach(function (slide) {
+      Array.prototype.forEach.call(allSlides, function (slide) {
         slide.style.width = slideWidth;
       });
 
-      if (this.track) {
-        this.track.style.gap = this.gap + 'px';
-      }
+      this.track.style.gap = this.gap + 'px';
     };
 
     BrandLogoSlider.prototype.bindEvents = function () {
       window.addEventListener('resize', this.onResize);
       this.root.addEventListener('mouseenter', this.onMouseEnter);
       this.root.addEventListener('mouseleave', this.onMouseLeave);
+      this.track.addEventListener('transitionend', this.onTransitionEnd);
     };
 
     BrandLogoSlider.prototype.unbindEvents = function () {
       window.removeEventListener('resize', this.onResize);
       this.root.removeEventListener('mouseenter', this.onMouseEnter);
       this.root.removeEventListener('mouseleave', this.onMouseLeave);
+      this.track.removeEventListener('transitionend', this.onTransitionEnd);
     };
 
     BrandLogoSlider.prototype.onNext = function () {
-      var maxIndex = this.getMaxIndex();
+      if (this.isTransitioning) return;
+
+      if (this.loop) {
+        this.currentIndex += 1;
+        this.goTo(this.currentIndex, true);
+        return;
+      }
+
+      var maxIndex = Math.max(0, this.originalSlideCount - this.getSlidesPerView());
       var nextIndex = this.currentIndex + 1;
 
       if (nextIndex > maxIndex) {
-        nextIndex = this.loop ? 0 : maxIndex;
+        nextIndex = maxIndex;
       }
 
-      this.goTo(nextIndex);
+      this.goTo(nextIndex, true);
+    };
+
+    BrandLogoSlider.prototype.onTransitionEnd = function (event) {
+      if (event.target !== this.track || event.propertyName !== 'transform') return;
+
+      this.isTransitioning = false;
+
+      if (this.loop && this.currentIndex >= this.originalSlideCount) {
+        this.currentIndex = 0;
+        this.goTo(0, false);
+      }
     };
 
     BrandLogoSlider.prototype.onResize = function () {
       this.applySlideWidths();
-      var maxIndex = this.getMaxIndex();
-      if (this.currentIndex > maxIndex) {
-        this.currentIndex = maxIndex;
-      }
-      this.goTo(this.currentIndex, false);
 
-      if (this.autoplay) {
+      if (this.loop) {
+        this.goTo(this.currentIndex, false);
+      } else {
+        var maxIndex = Math.max(0, this.originalSlideCount - this.getSlidesPerView());
+        if (this.currentIndex > maxIndex) {
+          this.currentIndex = maxIndex;
+        }
+        this.goTo(this.currentIndex, false);
+      }
+
+      if (this.autoplay && !this.isHovered) {
         this.stopAutoplay();
-        if (this.getMaxIndex() > 0) this.startAutoplay();
+        this.startAutoplay();
       }
     };
 
     BrandLogoSlider.prototype.onMouseEnter = function () {
+      this.isHovered = true;
       this.stopAutoplay();
     };
 
     BrandLogoSlider.prototype.onMouseLeave = function () {
-      if (this.autoplay && this.getMaxIndex() > 0) this.startAutoplay();
+      this.isHovered = false;
+      if (this.autoplay) {
+        this.startAutoplay();
+      }
     };
 
     BrandLogoSlider.prototype.startAutoplay = function () {
       var self = this;
+
+      if (this.isHovered || !this.autoplay) return;
+
       this.stopAutoplay();
       this.autoplayTimer = window.setInterval(function () {
         self.onNext();
@@ -202,11 +262,13 @@
     };
 
     BrandLogoSlider.prototype.goTo = function (index, animate) {
-      var maxIndex = this.getMaxIndex();
-      this.currentIndex = Math.min(Math.max(index, 0), maxIndex);
+      this.currentIndex = index;
 
       if (animate === false) {
         this.track.style.transition = 'none';
+        this.isTransitioning = false;
+      } else {
+        this.isTransitioning = true;
       }
 
       this.track.style.transform = 'translateX(-' + (this.currentIndex * this.getSlideStep()) + 'px)';
@@ -220,11 +282,15 @@
     BrandLogoSlider.prototype.destroy = function () {
       this.stopAutoplay();
       this.unbindEvents();
+      this.removeClones();
+
       if (this.track) {
         this.track.style.transform = '';
         this.track.style.gap = '';
+        this.track.style.transition = '';
       }
-      this.slides.forEach(function (slide) {
+
+      Array.prototype.forEach.call(this.track.querySelectorAll('.brand-logo-slide'), function (slide) {
         slide.style.width = '';
       });
     };
@@ -344,7 +410,7 @@
       "max": 120,
       "step": 10,
       "unit": "px",
-      "default": 50
+      "default": 0
     },
     {
       "type": "range",

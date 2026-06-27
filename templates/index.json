@@ -214,17 +214,66 @@
     "brand_logo_1": {
       "type": "brand-logo",
       "blocks": {
-        "logo_1": { "type": "logo", "settings": {} },
-        "logo_2": { "type": "logo", "settings": {} },
-        "logo_3": { "type": "logo", "settings": {} },
-        "logo_4": { "type": "logo", "settings": {} },
-        "logo_5": { "type": "logo", "settings": {} },
-        "logo_6": { "type": "logo", "settings": {} }
+        "logo_1": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Group_4_c3a1d76f-e6fc-493e-90c2-d0f448102ceb.svg",
+            "logo_alt": "Partner logo",
+            "link": ""
+          }
+        },
+        "logo_2": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Group_2_99c1332e-3e80-4fe0-814c-097b511f512f.svg",
+            "logo_alt": "Partner logo",
+            "link": ""
+          }
+        },
+        "logo_3": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Group_4_c3a1d76f-e6fc-493e-90c2-d0f448102ceb.svg",
+            "logo_alt": "Partner logo",
+            "link": ""
+          }
+        },
+        "logo_4": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Frame.svg",
+            "logo_alt": "Partner logo",
+            "link": ""
+          }
+        },
+        "logo_5": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Frame_1.svg",
+            "logo_alt": "Partner logo",
+            "link": ""
+          }
+        },
+        "logo_6": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Group_1_d5976424-5604-43a7-96e5-558c9f1fa13c.svg",
+            "logo_alt": "Partner logo",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["logo_1", "logo_2", "logo_3", "logo_4", "logo_5", "logo_6"],
+      "block_order": [
+        "logo_1",
+        "logo_2",
+        "logo_3",
+        "logo_4",
+        "logo_5",
+        "logo_6"
+      ],
       "settings": {
         "show_icon": true,
-        "section_icon": "shopify://shop_images/Vector.svg",
+        "section_icon": "shopify://shop_images/Group_246c1bbc-1e68-4aba-983d-54b052e52b30.svg",
         "icon_color": "#bb976d",
         "section_title": "Trusted Partner",
         "section_description": "Count on our trusted partnerships to deliver excellence. Collaborating with industry leaders ensures top-quality products and services for your satisfaction.",

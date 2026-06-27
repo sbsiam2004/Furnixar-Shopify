@@ -317,3 +317,26 @@ select {
   max-width: 64px !important;
   margin: 0 auto;
 }
+
+/* Animated underline — works on every wrapped line */
+.text-underline {
+  display: inline;
+  text-decoration: none;
+  color: inherit;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-bottom: 2px;
+  transition:
+    background-size 0.3s ease,
+    color 0.3s ease;
+}
+
+.text-underline:hover,
+.group:hover .text-underline {
+  color: var(--color-primary, #c8815f);
+  background-size: 100% 1px;
+}
