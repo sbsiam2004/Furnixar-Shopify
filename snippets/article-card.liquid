@@ -1,0 +1,64 @@
+{%- liquid
+  assign card_article = article
+  assign placeholder_tags = 'Interior,Chair,Vase,Interior,Chair' | split: ','
+  assign placeholder_titles = 'Auctor sit elementum habitant vel tempor varius.,Nisi interdum luctus etiam cum lobortis.,Eros ornare orci dapibus duis scelerisque.,Auctor sit elementum habitant vel tempor varius.,Nisi interdum luctus etiam cum lobortis.' | split: ','
+  assign placeholder_index = placeholder_index | default: 1 | minus: 1
+
+  if card_article != blank
+    assign article_url = card_article.url
+    assign article_title = card_article.title
+    assign article_image = card_article.image
+    assign article_date = card_article.published_at | date: '%d %b, %Y'
+    assign article_tag = card_article.tags.first
+    if article_tag != blank
+      assign tag_handle = article_tag | handleize
+      assign tag_url = card_article.blog.url | append: '/tagged/' | append: tag_handle
+    else
+      assign tag_url = card_article.blog.url
+    endif
+  else
+    assign article_url = '#'
+    assign article_title = placeholder_titles[placeholder_index] | default: placeholder_titles[0]
+    assign article_image = blank
+    assign article_date = '23 Jan, 2023'
+    assign article_tag = placeholder_tags[placeholder_index] | default: placeholder_tags[0]
+    assign tag_url = '#'
+  endif
+-%}
+
+<!-- Single Blog -->
+<div class="group">
+  <a href="{{ article_url }}" class="block overflow-hidden">
+    {% if article_image != blank %}
+      {{
+        article_image
+        | image_url: width: 520
+        | image_tag:
+          class: 'article-card-image duration-300 transform scale-100 group-hover:scale-110 w-full aspect-[260/293] object-cover',
+          loading: 'lazy',
+          widths: '260, 520',
+          sizes: '(min-width: 1536px) 20vw, (min-width: 1280px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw',
+          alt: article_title
+      }}
+    {% else %}
+      {{ 'image' | placeholder_svg_tag: 'article-card-image duration-300 transform scale-100 group-hover:scale-110 w-full aspect-[260/293] object-cover bg-white/10' }}
+    {% endif %}
+  </a>
+  <div class="px-3 mt-4 text-center">
+    <ul class="flex items-center justify-center gap-[10px] flex-wrap">
+      <li class="text-[15px] leading-none text-white">{{ article_date }}</li>
+      {% if article_tag != blank %}
+        <li>
+          <a href="{{ tag_url }}" class="inline-block text-title font-medium text-[15px] leading-none py-2 px-[10px] rounded-md bg-[#DBCBBD]">
+            {{ article_tag }}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+    <h5 class="text-xl mt-3 font-medium text-white leading-normal">
+      <a href="{{ article_url }}" class="text-underline">
+        {{ article_title }}
+      </a>
+    </h5>
+  </div>
+</div>

@@ -1,0 +1,249 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_slider_1": {
+      "type": "hero-slider",
+      "blocks": {
+        "slide_DfgDXi": {
+          "type": "slide",
+          "settings": {
+            "bg_color": "#172430",
+            "show_shape_1": true,
+            "shape_1_color": "#bb976d",
+            "product_price": "$140",
+            "product_title": "Aurora Flexible Sofa",
+            "product_btn_text": "Buy Now",
+            "product_link": "",
+            "show_shape_2": true,
+            "shape_2_color": "#bb976d",
+            "discount_amount": "-5%",
+            "discount_text": "OFF",
+            "year_text": "2025",
+            "script_image": "shopify://shop_images/Summer.svg",
+            "heading": "Transform Your Space with Elegant Furniture Designs",
+            "description": "Discover the latest must-have arrivals! Elevate your style with our newest collection of trendsetting items. Find your perfect fit with our diverse product.",
+            "shop_btn_text": "Shop Now",
+            "shop_link": "",
+            "main_image": "shopify://shop_images/imgi_6_newsofa.0w4dkzgsrys5q.webp"
+          }
+        }
+      },
+      "block_order": [
+        "slide_DfgDXi"
+      ],
+      "settings": {
+        "show_dots": true,
+        "autoplay": true,
+        "autoplay_speed": 4000,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "product_category_1": {
+      "type": "product-category",
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "image": "shopify://shop_images/home1_cate1_1.png",
+            "title": "Interior Item",
+            "item_count": "23",
+            "link": ""
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "collection": "automated-collection",
+            "image": "shopify://shop_images/image_2.png",
+            "title": "New Seat Tools",
+            "item_count": "5",
+            "link": ""
+          }
+        },
+        "category_3": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "image": "shopify://shop_images/image_1.png",
+            "title": "Flexible Sofa",
+            "item_count": "12",
+            "link": "shopify://products/the-archived-snowboard"
+          }
+        }
+      },
+      "block_order": [
+        "category_1",
+        "category_2",
+        "category_3"
+      ],
+      "settings": {
+        "show_icon": true,
+        "icon_color": "#bb976d",
+        "header_bg_color": "#172430",
+        "background_color": "#ebebeb",
+        "product_bg_color": "#172430",
+        "text_color": "#ebebeb",
+        "category_icon": "shopify://shop_images/g3603.svg",
+        "section_title": "Product Category",
+        "section_description": "Explore our curated selection of premium products, tailored to suit every need and taste. From essentials to indulgences, find your perfect fit.",
+        "autoplay": true,
+        "autoplay_speed": 4000,
+        "loop": true,
+        "padding_top": 50,
+        "padding_bottom": 100
+      }
+    },
+    "featured_products_1": {
+      "type": "featured-products",
+      "settings": {
+        "show_icon": true,
+        "section_icon": "shopify://shop_images/Vector.svg",
+        "icon_color": "#bb976d",
+        "section_title": "New Products",
+        "section_description": "Be the first to experience innovation with our latest arrivals. Stay ahead of the curve and discover what's new in style, technology, and more.",
+        "background_color": "#172430",
+        "collection": "",
+        "products_to_show": 4,
+        "default_review_count": "1,230",
+        "button_text": "All Products",
+        "button_url": "",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "why_choose_us_1": {
+      "type": "why-choose-us",
+      "blocks": {
+        "card_1": {
+          "type": "why_choose_card",
+          "settings": {
+            "icon": "shipping",
+            "icon_image": "shopify://shop_images/Group_49.svg",
+            "title": "Free Shipping",
+            "description": "Enjoy free shipping on all orders, making your shopping experience even more convenient. Get your favorite products delivered."
+          }
+        },
+        "card_2": {
+          "type": "why_choose_card",
+          "settings": {
+            "icon": "return",
+            "icon_image": "shopify://shop_images/Group_48.svg",
+            "title": "Easy to Return",
+            "description": "Experience hassle-free returns with our easy-to-use return policy. If you're not satisfied, simply return your product for a quick."
+          }
+        },
+        "card_3": {
+          "type": "why_choose_card",
+          "settings": {
+            "icon": "payment",
+            "icon_image": "shopify://shop_images/Group_52.svg",
+            "title": "Secure Payment",
+            "description": "Shop with confidence using our secure payment options, ensuring your personal information stays protected. We prioritize your safety."
+          }
+        },
+        "card_4": {
+          "type": "why_choose_card",
+          "settings": {
+            "icon": "support",
+            "icon_image": "shopify://shop_images/Group_51.svg",
+            "title": "Customer Support",
+            "description": "Our dedicated customer support team is here to assist you every step of the way. Reach out to us anytime for prompt, friendly help."
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4"
+      ],
+      "settings": {
+        "background_image": "shopify://shop_images/Group_125.png",
+        "overlay_color": "#172430",
+        "overlay_opacity": 80,
+        "card_bg_color": "#172430",
+        "show_icon": true,
+        "section_icon": "shopify://shop_images/Group.svg",
+        "icon_color": "#bb976d",
+        "section_title": "Why you Choose Us",
+        "section_description": "Choose us for unparalleled quality, exceptional service, and a commitment to your satisfaction. Join countless others who rely on us for reliability.",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "featured_products_masonry_1": {
+      "type": "featured-products-masonry",
+      "settings": {
+        "show_icon": true,
+        "section_icon": "shopify://shop_images/Vector.svg",
+        "icon_color": "#bb976d",
+        "section_title": "Featured Products",
+        "section_description": "Discover our handpicked collection of premium furniture and decor, curated to elevate every corner of your home.",
+        "background_color": "#172430",
+        "collection": "",
+        "default_review_count": "1,230",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "latest_blog_1": {
+      "type": "latest-blog",
+      "settings": {
+        "show_icon": true,
+        "section_icon": "shopify://shop_images/Vector.svg",
+        "icon_color": "#bb976d",
+        "section_title": "Latest Blog",
+        "section_description": "Stay informed and inspired with our latest blog posts. Explore insightful content that keeps you ahead of trends and informed on topics you love.",
+        "background_color": "#172430",
+        "blog": "news",
+        "posts_to_show": 5,
+        "padding_top": 50,
+        "padding_bottom": 50
+      }
+    },
+    "brand_logo_1": {
+      "type": "brand-logo",
+      "blocks": {
+        "logo_1": { "type": "logo", "settings": {} },
+        "logo_2": { "type": "logo", "settings": {} },
+        "logo_3": { "type": "logo", "settings": {} },
+        "logo_4": { "type": "logo", "settings": {} },
+        "logo_5": { "type": "logo", "settings": {} },
+        "logo_6": { "type": "logo", "settings": {} }
+      },
+      "block_order": ["logo_1", "logo_2", "logo_3", "logo_4", "logo_5", "logo_6"],
+      "settings": {
+        "show_icon": true,
+        "section_icon": "shopify://shop_images/Vector.svg",
+        "icon_color": "#bb976d",
+        "section_title": "Trusted Partner",
+        "section_description": "Count on our trusted partnerships to deliver excellence. Collaborating with industry leaders ensures top-quality products and services for your satisfaction.",
+        "background_color": "#172430",
+        "autoplay": true,
+        "autoplay_speed": 3000,
+        "loop": true,
+        "padding_top": 50,
+        "padding_bottom": 100
+      }
+    }
+  },
+  "order": [
+    "hero_slider_1",
+    "product_category_1",
+    "featured_products_1",
+    "why_choose_us_1",
+    "featured_products_masonry_1",
+    "latest_blog_1",
+    "brand_logo_1"
+  ]
+}

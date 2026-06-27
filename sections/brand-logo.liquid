@@ -1,0 +1,398 @@
+<!-- Partner Start -->
+<div
+  class="brand-logo-section overflow-hidden"
+  id="brand-logo-{{ section.id }}"
+  style="
+    background-color: {{ section.settings.background_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="container-fluid">
+    {% render 'section-heading',
+      show_section_icon: section.settings.show_icon,
+      section_icon: section.settings.section_icon,
+      icon_color: section.settings.icon_color,
+      section_title: section.settings.section_title,
+      section_description: section.settings.section_description,
+      section_title_class: 'leading-none mt-4 md:mt-6 text-2xl! md:text-3xl! lg:text-[36px]! font-semibold text-white',
+      section_description_class: 'mt-3 text-white/75 text-base max-w-[650px] mx-auto'
+    %}
+
+    <div>
+      <div
+        class="max-w-[1720px] mx-auto home-v1-partner-slider brand-logo-slider"
+        data-brand-logo-slider
+        data-section-id="{{ section.id }}"
+        data-autoplay="{{ section.settings.autoplay }}"
+        data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+        data-loop="{{ section.settings.loop }}"
+      >
+        <div class="brand-logo-viewport overflow-hidden">
+          <div class="brand-logo-track flex" data-slider-track>
+            {% for block in section.blocks %}
+              {% if block.type == 'logo' %}
+                <div class="brand-logo-slide shrink-0" {{ block.shopify_attributes }}>
+                  {% render 'brand-logo-icon', block: block %}
+                </div>
+              {% endif %}
+            {% else %}
+              {% for i in (1..6) %}
+                <div class="brand-logo-slide shrink-0">
+                  {% render 'brand-logo-icon', block: blank %}
+                </div>
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Partner End -->
+
+{% stylesheet %}
+  .brand-logo-section .brand-logo-track {
+    transition: transform 0.6s ease;
+    will-change: transform;
+  }
+
+  .brand-logo-section .brand-logo-slide {
+    flex-shrink: 0;
+  }
+
+  .brand-logo-section .brand-logo-image {
+    filter: brightness(0) invert(1);
+    opacity: 0.92;
+    transition: opacity 0.3s ease;
+  }
+
+  .brand-logo-section .brand-logo-link:hover .brand-logo-image {
+    opacity: 1;
+  }
+
+  .brand-logo-section .brand-logo-link {
+    text-decoration: none;
+  }
+{% endstylesheet %}
+
+<script>
+  (function () {
+    var sectionId = '{{ section.id }}';
+    var registry = window.__brandLogoSliders = window.__brandLogoSliders || {};
+
+    function BrandLogoSlider(root) {
+      this.root = root;
+      this.track = root.querySelector('[data-slider-track]');
+      this.slides = this.track ? Array.prototype.slice.call(this.track.querySelectorAll('.brand-logo-slide')) : [];
+      this.currentIndex = 0;
+      this.autoplayTimer = null;
+      this.gap = 30;
+
+      this.autoplay = root.dataset.autoplay === 'true';
+      this.autoplaySpeed = parseInt(root.dataset.autoplaySpeed, 10) || 3000;
+      this.loop = root.dataset.loop === 'true';
+
+      this.onResize = this.onResize.bind(this);
+      this.onMouseEnter = this.onMouseEnter.bind(this);
+      this.onMouseLeave = this.onMouseLeave.bind(this);
+      this.onNext = this.onNext.bind(this);
+
+      if (this.slides.length <= 1) return;
+
+      this.init();
+    }
+
+    BrandLogoSlider.prototype.getSlidesPerView = function () {
+      if (window.innerWidth >= 1536) return 6;
+      if (window.innerWidth >= 1280) return 5;
+      if (window.innerWidth >= 1024) return 4;
+      if (window.innerWidth >= 768) return 3;
+      if (window.innerWidth >= 640) return 2;
+      return 1;
+    };
+
+    BrandLogoSlider.prototype.getMaxIndex = function () {
+      return Math.max(0, this.slides.length - this.getSlidesPerView());
+    };
+
+    BrandLogoSlider.prototype.getSlideStep = function () {
+      if (!this.slides.length) return 0;
+      return this.slides[0].offsetWidth + this.gap;
+    };
+
+    BrandLogoSlider.prototype.init = function () {
+      this.applySlideWidths();
+      this.goTo(0, false);
+      this.bindEvents();
+      if (this.autoplay && this.getMaxIndex() > 0) this.startAutoplay();
+    };
+
+    BrandLogoSlider.prototype.applySlideWidths = function () {
+      var slidesPerView = this.getSlidesPerView();
+      var slideWidth = 'calc((100% - ' + ((slidesPerView - 1) * this.gap) + 'px) / ' + slidesPerView + ')';
+
+      this.slides.forEach(function (slide) {
+        slide.style.width = slideWidth;
+      });
+
+      if (this.track) {
+        this.track.style.gap = this.gap + 'px';
+      }
+    };
+
+    BrandLogoSlider.prototype.bindEvents = function () {
+      window.addEventListener('resize', this.onResize);
+      this.root.addEventListener('mouseenter', this.onMouseEnter);
+      this.root.addEventListener('mouseleave', this.onMouseLeave);
+    };
+
+    BrandLogoSlider.prototype.unbindEvents = function () {
+      window.removeEventListener('resize', this.onResize);
+      this.root.removeEventListener('mouseenter', this.onMouseEnter);
+      this.root.removeEventListener('mouseleave', this.onMouseLeave);
+    };
+
+    BrandLogoSlider.prototype.onNext = function () {
+      var maxIndex = this.getMaxIndex();
+      var nextIndex = this.currentIndex + 1;
+
+      if (nextIndex > maxIndex) {
+        nextIndex = this.loop ? 0 : maxIndex;
+      }
+
+      this.goTo(nextIndex);
+    };
+
+    BrandLogoSlider.prototype.onResize = function () {
+      this.applySlideWidths();
+      var maxIndex = this.getMaxIndex();
+      if (this.currentIndex > maxIndex) {
+        this.currentIndex = maxIndex;
+      }
+      this.goTo(this.currentIndex, false);
+
+      if (this.autoplay) {
+        this.stopAutoplay();
+        if (this.getMaxIndex() > 0) this.startAutoplay();
+      }
+    };
+
+    BrandLogoSlider.prototype.onMouseEnter = function () {
+      this.stopAutoplay();
+    };
+
+    BrandLogoSlider.prototype.onMouseLeave = function () {
+      if (this.autoplay && this.getMaxIndex() > 0) this.startAutoplay();
+    };
+
+    BrandLogoSlider.prototype.startAutoplay = function () {
+      var self = this;
+      this.stopAutoplay();
+      this.autoplayTimer = window.setInterval(function () {
+        self.onNext();
+      }, this.autoplaySpeed);
+    };
+
+    BrandLogoSlider.prototype.stopAutoplay = function () {
+      if (this.autoplayTimer) {
+        window.clearInterval(this.autoplayTimer);
+        this.autoplayTimer = null;
+      }
+    };
+
+    BrandLogoSlider.prototype.goTo = function (index, animate) {
+      var maxIndex = this.getMaxIndex();
+      this.currentIndex = Math.min(Math.max(index, 0), maxIndex);
+
+      if (animate === false) {
+        this.track.style.transition = 'none';
+      }
+
+      this.track.style.transform = 'translateX(-' + (this.currentIndex * this.getSlideStep()) + 'px)';
+
+      if (animate === false) {
+        void this.track.offsetWidth;
+        this.track.style.transition = '';
+      }
+    };
+
+    BrandLogoSlider.prototype.destroy = function () {
+      this.stopAutoplay();
+      this.unbindEvents();
+      if (this.track) {
+        this.track.style.transform = '';
+        this.track.style.gap = '';
+      }
+      this.slides.forEach(function (slide) {
+        slide.style.width = '';
+      });
+    };
+
+    function initSlider() {
+      var root = document.querySelector('#brand-logo-' + sectionId + ' [data-brand-logo-slider]');
+      if (!root) return;
+
+      if (registry[sectionId]) {
+        registry[sectionId].destroy();
+      }
+
+      registry[sectionId] = new BrandLogoSlider(root);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSlider);
+    } else {
+      initSlider();
+    }
+
+    document.addEventListener('shopify:section:load', function (event) {
+      if (event.detail.sectionId === sectionId) {
+        initSlider();
+      }
+    });
+
+    document.addEventListener('shopify:section:unload', function (event) {
+      if (event.detail.sectionId === sectionId && registry[sectionId]) {
+        registry[sectionId].destroy();
+        delete registry[sectionId];
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Brand Logo",
+  "tag": "section",
+  "class": "brand-logo-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "section_icon",
+      "label": "Section icon"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#BB976D"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Heading",
+      "default": "Trusted Partner"
+    },
+    {
+      "type": "textarea",
+      "id": "section_description",
+      "label": "Description",
+      "default": "Count on our trusted partnerships to deliver excellence. Collaborating with industry leaders ensures top-quality products and services for your satisfaction."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#172430"
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 2000,
+      "max": 8000,
+      "step": 500,
+      "unit": "ms",
+      "default": 3000
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop slides",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Brand logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo image"
+        },
+        {
+          "type": "text",
+          "id": "logo_alt",
+          "label": "Logo alt text",
+          "default": "Partner logo"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Logo",
+      "blocks": [
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

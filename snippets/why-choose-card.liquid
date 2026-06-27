@@ -1,0 +1,26 @@
+<!-- Single Chose Card -->
+<div
+    class="why-choose-card p-6 rounded-[10px]"
+    style="background-color: {{ card_bg_color | default: '#172430' }};"
+    {{ block.shopify_attributes }}
+    >
+    <div class="max-w-[60px]">
+        {% render 'why-choose-icon',
+            icon: block.settings.icon,
+            icon_image: block.settings.icon_image,
+            icon_color: icon_color
+        %}
+    </div>
+
+    {% if block.settings.title != blank %}
+        <h4 class="mt-5 text-xl font-semibold leading-none text-white sm:mt-7 md:text-2xl">
+        {{ block.settings.title }}
+        </h4>
+    {% endif %}
+
+    {% if block.settings.description != blank %}
+        <p class="mt-[15px] text-white/75 text-base leading-relaxed">
+        {{ block.settings.description }}
+        </p>
+    {% endif %}
+</div>

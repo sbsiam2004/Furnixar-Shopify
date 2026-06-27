@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "header",
+  "type": "header",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "logo": "shopify://shop_images/Group_4.svg",
+        "logo_width": 130,
+        "menu": "main-menu",
+        "enable_login_link": true,
+        "login_text": "Login",
+        "enable_search": true,
+        "enable_wishlist": true,
+        "show_wishlist_count": true,
+        "wishlist_count": 14,
+        "wishlist_title": "Wishlist",
+        "view_wishlist_text": "View All Wishlist",
+        "wishlist_page_url": "",
+        "enable_cart": true,
+        "show_cart_count": true,
+        "cart_title": "Cart List",
+        "subtotal_text": "Subtotal",
+        "view_cart_text": "View Cart",
+        "checkout_text": "Checkout",
+        "enable_hamburger": true,
+        "enable_dark_mode_toggle": true
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

@@ -1,0 +1,57 @@
+{%- liquid
+  assign collection = block.settings.collection
+  assign card_title = block.settings.title
+  assign card_link = block.settings.link
+  assign card_image = block.settings.image
+  assign item_count = block.settings.item_count
+
+  if collection != blank
+    if card_title == blank
+      assign card_title = collection.title
+    endif
+    if card_link == blank
+      assign card_link = collection.url
+    endif
+    if card_image == blank and collection.image != blank
+      assign card_image = collection.image
+    endif
+    if item_count == blank
+      assign item_count = collection.all_products_count
+    endif
+  endif
+
+  assign card_link = card_link | default: '#'
+  assign item_count = item_count | default: 0
+  assign card_alt = card_image.alt | default: card_title | escape
+-%}
+
+<a class="product-category-card relative block overflow-hidden" href="{{ card_link }}" {{ block.shopify_attributes }}>
+  <div class="product-category-card__media">
+    {% if card_image != blank %}
+      {{
+        card_image
+        | image_url: width: 1134
+        | image_tag:
+          class: 'product-category-card__image',
+          loading: 'lazy',
+          widths: '400, 567, 800, 1134',
+          sizes: '(min-width: 1280px) 560px, (min-width: 640px) 50vw, 100vw',
+          alt: card_alt
+      }}
+    {% else %}
+      <div class="product-category-card__placeholder">
+        {{ 'collection-1' | placeholder_svg_tag }}
+      </div>
+    {% endif %}
+  </div>
+  <div class="product-category-card__info absolute bottom-7 left-0 px-5 w-full flex justify-start pointer-events-none">
+    <div class="p-[15px] bg-title w-auto pointer-events-auto">
+      {% if item_count != blank %}
+        <span class="text-lg text-primary font-medium leading-none">{{ item_count }} items</span>
+      {% endif %}
+      {% if card_title != blank %}
+        <h4 class="text-xl md:text-2xl mt-[10px] font-semibold leading-normal text-white">{{ card_title }}</h4>
+      {% endif %}
+    </div>
+  </div>
+</a>

@@ -1,0 +1,100 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "Footer",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "link_list_VLkiqa": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Sitemap",
+            "menu": "footer"
+          }
+        },
+        "link_list_GWWFeg": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Others",
+            "menu": "footer-menu-2"
+          }
+        },
+        "about_LNaptR": {
+          "type": "about",
+          "settings": {
+            "logo": "shopify://shop_images/Group_4.svg",
+            "logo_width": 180,
+            "description": "<p>Discover the finest furniture to elevate your home. Quality craftsmanship and timeless design.</p>",
+            "show_social": true
+          }
+        },
+        "newsletter_88YP3E": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Newsletter",
+            "subtext": "<p>Lorem ipsum dolor sit amet, consectetur purus habitasse ut diam. Auctor sit elementum habitant vel tempor varius. </p>"
+          }
+        },
+        "link_list_xWXReD": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Shop",
+            "menu": "footer-menu-3"
+          }
+        },
+        "link_list_fX9XCM": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Customer Service",
+            "menu": "footer-menu-4"
+          }
+        }
+      },
+      "block_order": [
+        "link_list_VLkiqa",
+        "link_list_GWWFeg",
+        "about_LNaptR",
+        "newsletter_88YP3E",
+        "link_list_xWXReD",
+        "link_list_fX9XCM"
+      ],
+      "settings": {
+        "direction": "vertical",
+        "vertical_mobile": false,
+        "alignment": "left",
+        "gap": 100,
+        "width": "page",
+        "height": "auto",
+        "background_image": "shopify://shop_images/Rectangle_769.png",
+        "background_color": "#172430",
+        "social_facebook_link": "",
+        "social_twitter_link": "",
+        "social_instagram_link": "",
+        "social_icon_color": "#ffffff",
+        "social_icon_hover_color": "#c8815f",
+        "social_icon_size": 40,
+        "social_icon_gap": 12,
+        "social_icon_direction": "horizontal",
+        "text_color": "#ffffff",
+        "sub_text_color": "#ffffff",
+        "background_overlay": true,
+        "overlay_color": "#172430",
+        "border_radius": 0,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

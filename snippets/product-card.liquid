@@ -1,0 +1,171 @@
+{%- liquid
+  assign review_count = review_count | default: '1,230'
+  assign card_product = product
+  assign card_style = card_style | default: 'default'
+  assign discount = blank
+
+  if card_style == 'masonry_small'
+    assign group_class = 'group'
+    assign image_wrapper_class = 'relative overflow-hidden'
+    assign image_class = 'product-card-image w-full transform group-hover:scale-110 duration-300 sm:max-h-[320px] object-cover aspect-[367/320]'
+    assign content_class = 'flex flex-col gap-3 pt-5 lg:pt-6 md:gap-4'
+    assign title_link_class = 'text-underline'
+    assign title_class = 'font-normal text-white text-xl leading-[1.5]'
+    assign price_class = 'text-lg font-medium leading-none text-white'
+    assign show_corner_badges = false
+    assign image_width = 734
+  elsif card_style == 'masonry_tall'
+    assign group_class = 'flex flex-col group'
+    assign image_wrapper_class = 'relative flex-1 overflow-hidden'
+    assign image_class = 'product-card-image w-full transform group-hover:scale-110 duration-300 h-full object-cover aspect-[445/788]'
+    assign content_class = 'flex flex-col gap-3 pt-5 lg:pt-6 md:gap-4'
+    assign title_link_class = 'text-underline'
+    assign title_class = 'font-normal text-white text-xl leading-[1.5]'
+    assign price_class = 'text-lg font-medium leading-none text-white'
+    assign show_corner_badges = false
+    assign image_width = 890
+  else
+    assign group_class = 'group'
+    assign image_wrapper_class = 'relative overflow-hidden bg-[#f0f0f0]'
+    assign image_class = 'product-card-image'
+    assign content_class = 'flex flex-col gap-4 pt-5 px-6 xl:px-[30px]! lg:pt-[30px]! md:gap-5'
+    assign title_link_class = 'product-card-title'
+    assign title_class = 'font-normal text-white text-xl leading-normal'
+    assign price_class = 'text-lg font-medium leading-none text-white'
+    assign show_corner_badges = true
+    assign image_width = 812
+  endif
+
+  if card_product != blank
+    assign product_url = card_product.url
+    assign product_title = card_product.title
+    assign product_image = card_product.featured_image
+
+    if card_product.compare_at_price > card_product.price
+      assign discount = card_product.compare_at_price | minus: card_product.price | times: 100.0 | divided_by: card_product.compare_at_price | round
+    endif
+  else
+    assign product_url = '#'
+    assign product_title = 'Premium Luxury Chair'
+  endif
+-%}
+
+<!-- Single Product -->
+<div class="{{ group_class }}">
+  <div class="{{ image_wrapper_class }}">
+    <a href="{{ product_url }}">
+      {% if card_style == 'default' %}
+        <div class="h-full w-full aspect-406/447 object-cover!">
+          {% if product_image != blank %}
+            {{
+              product_image
+              | image_url: width: image_width, height: image_width
+              | image_tag:
+                class: image_class,
+                loading: 'lazy',
+                widths: '406, 812',
+                sizes: '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw',
+                alt: product_title
+            }}
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: image_class }}
+          {% endif %}
+        </div>
+      {% else %}
+        {% if product_image != blank %}
+          {{
+            product_image
+            | image_url: width: image_width
+            | image_tag:
+              class: image_class,
+              loading: 'lazy',
+              widths: '367, 734, 445, 890',
+              sizes: '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw',
+              alt: product_title
+          }}
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: image_class }}
+        {% endif %}
+      {% endif %}
+    </a>
+
+    {% if show_corner_badges %}
+      <div class="absolute top-3 left-3 z-10 flex flex-col items-start gap-2">
+        {% if discount != blank %}
+          <span class="inline-block px-3 py-1 text-sm font-medium text-white rounded-full bg-secondary">
+            {{ discount }}% OFF
+          </span>
+        {% elsif card_product == blank %}
+          <span class="inline-block px-3 py-1 text-sm font-medium text-white rounded-full bg-secondary">
+            25% OFF
+          </span>
+        {% endif %}
+
+        {% if card_product != blank and card_product.tags.size > 0 %}
+        {% elsif card_product == blank or card_product.tags == blank %}
+          <span class="inline-block px-3 py-1 text-sm font-medium text-white rounded-full bg-[#26b295]">Hot Sale</span>
+        {% endif %}
+
+        {%- assign date_created = card_product.created_at | date: '%s' -%}
+        {%- assign date_now = 'now' | date: '%s' -%}
+        {%- assign date_difference = date_now | minus: date_created -%}
+        {% if date_difference <= 86400 or card_product == blank %}
+          <span class="inline-block px-3 py-1 text-sm font-medium text-white rounded-full" style="background-color: #9739e1;">New</span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% render 'product-badge', product: card_product %}
+  </div>
+
+  {% if card_style == 'default' %}
+    <div class="{{ content_class }}">
+      <h4 class="{{ price_class }}">
+        {% if card_product != blank %}
+          {% if card_product.price_varies %}
+            {{ card_product.price_min | money }} - {{ card_product.price_max | money }}
+          {% else %}
+            {{ card_product.price | money }}
+          {% endif %}
+        {% else %}
+          $155.12
+        {% endif %}
+      </h4>
+
+      <div class="flex flex-col gap-2">
+        <h5 class="{{ title_class }}">
+          <a href="{{ product_url }}" class="{{ title_link_class }}">
+            {{ product_title }}
+          </a>
+        </h5>
+        {% render 'product-rating', product: card_product, review_count: review_count %}
+      </div>
+    </div>
+  {% else %}
+    <div class="{{ content_class }}">
+      <h4 class="{{ price_class }}">
+        {% if card_product != blank %}
+          {% if card_product.price_varies %}
+            {{ card_product.price_min | money }} - {{ card_product.price_max | money }}
+          {% else %}
+            {{ card_product.price | money }}
+            {% if card_product.compare_at_price > card_product.price %}
+              <span class="inline-block pl-2 line-through text-white/50">{{ card_product.compare_at_price | money }}</span>
+            {% endif %}
+          {% endif %}
+        {% else %}
+          $122.75 <span class="inline-block pl-2 line-through text-white/50">$140.99</span>
+        {% endif %}
+      </h4>
+
+      <div>
+        <h5 class="{{ title_class }}">
+          <a href="{{ product_url }}" class="{{ title_link_class }}">
+            {{ product_title }}
+          </a>
+        </h5>
+        {% render 'product-rating', product: card_product, review_count: review_count %}
+      </div>
+    </div>
+  {% endif %}
+</div>

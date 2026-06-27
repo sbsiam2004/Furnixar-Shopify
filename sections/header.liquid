@@ -1,0 +1,1225 @@
+<style>
+  /* ===== Header Logo ===== */
+  .header-area a img {
+    width: auto;
+    height: auto;
+  }
+
+  /* ===== Main Menu ===== */
+  .main-menu { display: none; }
+  .main-menu.active { display: block; }
+  @media (min-width: 1024px) {
+    .main-menu { display: block !important; }
+  }
+  .main-menu > ul > li { padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.08); }
+  @media (min-width: 1024px) {
+    .main-menu > ul > li { padding: 25px 0; border-bottom: none; }
+    .main-menu > ul > li > a { color: #fff !important; }
+    .main-menu > ul > li > a:hover { color: #C8815F !important; }
+  }
+  .main-menu ul li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    transition: all 0.3s ease;
+    padding: 8px 0;
+    font-size: 16px;
+  }
+  @media (min-width: 1024px) {
+    .main-menu ul li a {
+      justify-content: flex-start;
+      padding: 0;
+    }
+  }
+  /* Plus and Minus Icons */
+  /* Plus and Minus Icons */
+    ..menu-list-toggle-icon .plus-icon,
+    .menu-list-toggle-icon .minus-icon {
+        transition: all 0.3s ease;
+        color: inherit;
+        display: inline-block;
+    }
+
+    .menu-list-toggle-icon .plus-icon {
+        display: inline-block;
+    }
+
+    .menu-list-toggle-icon .minus-icon {
+        display: none;
+    }
+
+    .group:hover > a {
+        color: #BB976D;
+        transition: all 0.3s ease;
+    }
+
+    .group:hover .menu-list-toggle-icon .plus-icon {
+        display: none;
+    }
+
+    .group:hover .menu-list-toggle-icon .minus-icon {
+        display: inline-block;
+        color: #BB976D;
+    }
+
+  /* ===== Sub Menu ===== */
+    .sub-menu { list-style: none; padding-left: 15px; }
+    @media (min-width: 1024px) {
+        .sub-menu {
+            position: absolute;
+            z-index: 50;
+            top: 100%;
+            left: 0;
+            min-width: 220px;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .group:hover > .sub-menu {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+    .sub-menu li a {
+        font-size: 18px;
+        color: #ffffff;
+        padding: 15px 0px !important;
+        display: block;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #ffffff10;
+    }
+    .sub-menu li a:hover {
+        color: #C8815F;
+        padding-left: 20px;
+    }
+    
+
+    /* ===== Mega Menu ===== */
+    .mega-menu { padding-left: 15px; }
+    @media (min-width: 1024px) {
+        .mega-menu {
+            position: absolute;
+            z-index: 50;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 1100px;
+            width: 100%;
+            padding: 30px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 30px;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .group:hover > .mega-menu {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+    .megamenu-item ul { list-style: none; padding: 0; }
+    .megamenu-item ul li a {
+        font-size: 18px;
+        color: #ffffff;
+        padding: 15px 0;
+        display: block;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #ffffff10;
+    }
+    .sub-menu,
+    .megamenu-item ul li:last-child a {
+        border-bottom: none;
+    }
+    .sub-menu li:last-child a {
+        border-bottom: none;
+    }
+    .megamenu-item ul li a:hover { color: #C8815F; }
+
+    /* ===== Wishlist & Cart Popups ===== */
+    .wishlist_popup, .hdr_cart_popup { max-height: 450px; overflow-y: auto; }
+    .wishlist_popup::-webkit-scrollbar,
+    .hdr_cart_popup::-webkit-scrollbar { width: 4px; }
+    .wishlist_popup::-webkit-scrollbar-thumb,
+    .hdr_cart_popup::-webkit-scrollbar-thumb {
+        background: #C8815F;
+        border-radius: 10px;
+    }
+    .wishlist-item { max-height: 320px; overflow-y: auto; }
+    .wishlist-item::-webkit-scrollbar { width: 4px; }
+    .wishlist-item::-webkit-scrollbar-thumb { background: #C8815F; border-radius: 10px; }
+    .hdr-cart-item { max-height: 320px; overflow-y: auto; }
+    .hdr-cart-item::-webkit-scrollbar { width: 4px; }
+    .hdr-cart-item::-webkit-scrollbar-thumb { background: #C8815F; border-radius: 10px; }
+
+    /* ===== Buttons ===== */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        cursor: pointer;
+    }
+    .btn-sm { padding: 10px 20px; font-size: 14px; }
+    .btn-outline {
+        border: 1px solid #111827;
+        color: #111827;
+        background: transparent;
+    }
+    .btn-outline:hover {
+        background: #C8815F;
+        border-color: #C8815F;
+        color: #fff;
+    }
+    .btn-theme-solid {
+        background: #C8815F;
+        color: #fff;
+        border: 1px solid #C8815F;
+    }
+    .btn-theme-solid:hover {
+        background: #111827;
+        border-color: #111827;
+    }
+
+    /* ===== Hamburger ===== */
+    .hamburger {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: block;
+    }
+    @media (min-width: 1024px) {
+        .hamburger { display: none; }
+    }
+    .hamburger svg { width: 35px; height: 35px; }
+    .hamburger .line {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 5;
+        stroke-linecap: round;
+        transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+                    stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .hamburger .line1 { stroke-dasharray: 60 207; }
+    .hamburger .line2 { stroke-dasharray: 60 60; }
+    .hamburger .line3 { stroke-dasharray: 60 207; }
+    .hamburger.active .line1 { stroke-dasharray: 90 207; stroke-dashoffset: -134; }
+    .hamburger.active .line2 { stroke-dasharray: 1 60; stroke-dashoffset: -30; }
+    .hamburger.active .line3 { stroke-dasharray: 90 207; stroke-dashoffset: -134; }
+
+    /* ===== Dark/Light Switcher ===== */
+    .switcher {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+    .switcher .sun { display: none; }
+    .switcher .moon { display: block; }
+    .switcher input:checked ~ .sun { display: block; }
+    .switcher input:checked ~ .moon { display: none; }
+
+    /* ===== Inc/Dec Buttons ===== */
+    .inc-dec .dec, .inc-dec .inc { cursor: pointer; }
+
+    /* ===== Search Button ===== */
+    .hdr_search_btn, .hdr_wishList_btn, .hdr_cart_btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    /* ===== Tailwind Utility Fallbacks ===== */
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .z-50 { z-index: 50; }
+    .bg-black { background-color: #000; }
+    .bg-white { background-color: #fff; }
+    .bg-transparent { background-color: transparent; }
+    .bg-primary { background-color: #C8815F; }
+    .bg-secondary { background-color: #E53E3E; }
+    .bg-title { background-color: #111827; }
+
+    .text-white { color: #fff; }
+    .text-title { color: #111827; }
+    .text-primary { color: #C8815F; }
+    .fill-current { fill: currentColor; }
+    .stroke-current { stroke: currentColor; }
+
+    .flex { display: flex; }
+    .hidden { display: none; }
+    .block { display: block; }
+    .inline-flex { display: inline-flex; }
+    .grid { display: grid; }
+
+    .items-center { align-items: center; }
+    .items-start { align-items: flex-start; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .justify-start { justify-content: flex-start; }
+
+    .flex-1 { flex: 1; }
+    .w-full { width: 100%; }
+    .h-full { height: 100%; }
+    .h-auto { height: auto; }
+
+    .gap-2 { gap: 0.5rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-x-5 { column-gap: 1.25rem; }
+    .gap-x-6 { column-gap: 1.5rem; }
+    .gap-\[10px\] { gap: 10px; }
+    .gap-\[15px\] { gap: 15px; }
+    .gap-\[30px\] { gap: 30px; }
+
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mb-4 { margin-top: 1rem; }
+    .mb-5 { margin-bottom: 1.25rem; }
+    .pb-\[15px\] { padding-bottom: 15px; }
+    .mb-\[15px\] { margin-bottom: 15px; }
+    .py-\[10px\] { padding-top: 10px; padding-bottom: 10px; }
+    .py-\[15px\] { padding-top: 15px; padding-bottom: 15px; }
+    .py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+    .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .p-5 { padding: 1.25rem; }
+    .pr-4 { padding-right: 1rem; }
+    .pt-5 { padding-top: 1.25rem; }
+
+    .max-w-\[1720px\] { max-width: 1720px; }
+
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-sm { font-size: 0.875rem; }
+    .text-base { font-size: 1rem; line-height: 1.5rem; }
+    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .text-xl { font-size: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .text-\[14px\] { font-size: 14px; }
+    .text-\[15px\] { font-size: 15px; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .leading-none { line-height: 1; }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+
+    .rounded-full { border-radius: 9999px; }
+    .border { border-width: 1px; border-style: solid; }
+    .border-b { border-bottom-width: 1px; border-bottom-style: solid; }
+    .border-t { border-top-width: 1px; border-top-style: solid; }
+    .border-primary { border-color: #C8815F; }
+    .border-bdr-clr { border-color: #E5E7EB; }
+
+    .w-3 { width: 0.75rem; }
+    .w-6 { width: 1.5rem; }
+    .h-6 { height: 1.5rem; }
+    .h-7 { height: 1.75rem; }
+    .w-\[1px\] { width: 1px; }
+    .w-\[6px\] { width: 6px; }
+    .h-\[6px\] { height: 6px; }
+    .w-\[18px\] { width: 18px; }
+    .w-\[19px\] { width: 19px; }
+    .w-\[22px\] { width: 22px; }
+    .h-\[22px\] { height: 22px; }
+    .w-\[25px\] { width: 25px; }
+    .w-\[70px\] { width: 70px; }
+    .w-80 { width: 20rem; }
+    .h-\[1\.1px\] { height: 1.1px; }
+
+    .-top-\[10px\] { top: -10px; }
+    .-right-\[11px\] { right: -11px; }
+    .top-0 { top: 0; }
+    .right-0 { right: 0; }
+    .top-full { top: 100%; }
+    .left-0 { left: 0; }
+
+    .opacity-0 { opacity: 0; }
+    .invisible { visibility: hidden; }
+    .visible { visibility: visible; }
+    .outline-none { outline: none; }
+    .overflow-hidden { overflow: hidden; }
+    .bg-opacity-10 { --tw-bg-opacity: 0.1; }
+
+    .transition-all { transition: all 0.3s ease; }
+    .duration-300 { transition-duration: 300ms; }
+
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .order-first { order: -9999; }
+
+    .cursor-pointer { cursor: pointer; }
+
+    /* ===== Hover States ===== */
+    .hover\:text-primary:hover { color: #C8815F !important; }
+    .hover\:text-white:hover { color: #fff !important; }
+    .hover\:bg-primary:hover { background-color: #C8815F !important; }
+
+    /* ===== Group Hover (critical for dropdowns) ===== */
+    .group:hover > .group-hover\:visible,
+    .group:hover > .sub-menu,
+    .group:hover > .mega-menu {
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* ===== Responsive: SM (640px) ===== */
+    @media (min-width: 640px) {
+        .sm\:py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .sm\:py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+        .sm\:px-\[30px\] { padding-left: 30px; padding-right: 30px; }
+        .sm\:gap-6 { gap: 1.5rem; }
+        .sm\:w-7 { width: 1.75rem; }
+        .sm\:w-\[20px\] { width: 20px; }
+        .sm\:w-\[25px\] { width: 25px; }
+        .sm\:block { display: block; }
+        .sm\:order-last { order: 9999; }
+    }
+
+    /* ===== Responsive: MD (768px) ===== */
+    @media (min-width: 768px) {
+        .md\:w-96 { width: 24rem; }
+        .md\:w-auto { width: auto; }
+        .md\:py-\[30px\] { padding-top: 30px; padding-bottom: 30px; }
+        .md\:pl-\[30px\] { padding-left: 30px; }
+        .md\:pr-\[15px\] { padding-right: 15px; }
+        .md\:p-\[30px\] { padding: 30px; }
+        .md\:pr-5 { padding-right: 1.25rem; }
+        .md\:text-lg { font-size: 1.125rem; }
+        .md\:text-xl { font-size: 1.25rem; }
+        .md\:text-2xl { font-size: 1.5rem; }
+        .md\:text-\[15px\] { font-size: 15px; }
+        .md\:mt-10 { margin-top: 2.5rem; }
+        .md\:mb-7\.5 { margin-bottom: 1.875rem; }
+        .md\:pt-7\.5 { padding-top: 1.875rem; }
+        .md\:mt-7\.5 { margin-top: 1.875rem; }
+    }
+
+    /* ===== Responsive: LG (1024px) ===== */
+    @media (min-width: 1024px) {
+        .lg\:flex { display: flex; }
+        .lg\:block { display: block; }
+        .lg\:hidden { display: none !important; }
+        .lg\:static { position: static; }
+        .lg\:w-auto { width: auto; }
+        .lg\:py-0 { padding-top: 0; padding-bottom: 0; }
+        .lg\:px-0 { padding-left: 0; padding-right: 0; }
+        .lg\:gap-\[30px\] { gap: 30px; }
+        .lg\:bg-transparent { background-color: transparent; }
+        .lg\:absolute { position: absolute; }
+        .lg\:top-full { top: 100%; }
+        .lg\:left-0 { left: 0; }
+        .lg\:left-1\/2 { left: 50%; }
+        .lg\:transform { transform: translateX(0); }
+        .lg\:-translate-x-1\/2 { transform: translateX(-50%); }
+        .lg\:min-w-\[220px\] { min-width: 220px; }
+        .lg\:max-w-\[1100px\] { max-width: 1100px; }
+        .lg\:max-w-\[280px\] { max-width: 280px; }
+        .lg\:bg-white { background-color: #fff; }
+        .lg\:bg-title { background-color: #111827; }
+        .lg\:py-\[15px\] { padding-top: 15px; padding-bottom: 15px; }
+        .lg\:pr-\[30px\] { padding-right: 30px; }
+        .lg\:px-\[30px\] { padding-left: 30px; padding-right: 30px; }
+        .lg\:invisible { visibility: hidden; }
+        .lg\:opacity-0 { opacity: 0; }
+        .lg\:transition-all { transition: all 0.3s ease; }
+        .lg\:duration-300 { transition-duration: 300ms; }
+        .lg\:items-start { align-items: flex-start; }
+        .lg\:justify-between { justify-content: space-between; }
+        .lg\:flex-1 { flex: 1; }
+        .lg\:grid { display: grid; }
+        .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .lg\:justify-start { justify-content: flex-start; }
+
+        .group:hover > .group-hover\:lg\:visible {
+        visibility: visible !important;
+        }
+        .group:hover > .group-hover\:lg\:opacity-100 {
+        opacity: 1 !important;
+        }
+    }
+
+    /* ===== Responsive: 2XL (1536px) ===== */
+    @media (min-width: 1536px) {
+        .2xl\:gap-x-\[25px\] { column-gap: 25px; }
+    }
+
+    /* ===== bg-title/20 utility ===== */
+    .bg-title\/20 { background-color: rgba(17, 24, 39, 0.2); }
+
+    /* ===== Header Icon Colors (force white on black bg) ===== */
+    .header-area .hdr_search_btn svg,
+    .header-area .hdr_wishList_btn svg,
+    .header-area .hdr_cart_btn svg {
+        color: #fff;
+        fill: #fff;
+    }
+    .header-area .hdr_wishList_btn .absolute,
+    .header-area .hdr_cart_btn .absolute {
+        z-index: 1;
+    }
+
+    /* Login link white on header */
+    .header-area > .container-fluid a.text-lg {
+        color: #fff;
+    }
+    .header-area > .container-fluid a.text-lg:hover {
+        color: #C8815F;
+    }
+
+    /* ===== Wishlist & Cart close button opacity fix ===== */
+    .wishList_item_close {
+        cursor: pointer;
+        background-color: rgba(17, 24, 39, 0.1);
+    }
+    .wishList_item_close:hover {
+        background-color: #C8815F;
+    }
+    .wishList_item_close svg {
+        fill: #111827;
+    }
+    .wishList_item_close:hover svg {
+        fill: #fff;
+    }
+
+    /* ===== Group hover opacity for close buttons in cart ===== */
+    .group:hover > .group-hover\:opacity-100 {
+        opacity: 1 !important;
+    }
+
+    /* Dark mode switcher divider */
+    .dark .bg-white\/20 { background-color: rgba(255, 255, 255, 0.2); }
+</style>
+
+<header class="header-area default-header relative z-50 bg-[#172430]" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+    <div class="container-fluid">
+        <header class="flex items-center justify-between gap-x-6 max-w-[1720px] mx-auto relative">
+            <!-- Logo -->
+            <a href="{{ routes.root_url }}" style="flex-shrink: 0;">
+                {% if section.settings.logo != blank %}
+                    <img
+                    src="{{ section.settings.logo | image_url: width: 280 }}"
+                    alt="{{ section.settings.logo.alt | default: shop.name | escape }}"
+                    width="{{ section.settings.logo_width }}"
+                    height="{{ section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio | round }}"
+                    loading="eager"
+                    style="width: {{ section.settings.logo_width }}px; height: auto;"
+                    >
+                {% elsif shop.brand.logo %}
+                    <img
+                    src="{{ shop.brand.logo | image_url: width: 280 }}"
+                    alt="{{ shop.name | escape }}"
+                    width="{{ section.settings.logo_width }}"
+                    height="{{ section.settings.logo_width | divided_by: shop.brand.logo.aspect_ratio | round }}"
+                    loading="eager"
+                    style="width: {{ section.settings.logo_width }}px; height: auto;"
+                    >
+                {% else %}
+                    <span>{{ shop.name }}</span>
+                {% endif %}
+            </a>
+
+            <!-- Menu -->
+            <div class="main-menu absolute z-50 w-full lg:w-auto top-full left-0 lg:static bg-white dark:bg-title lg:bg-transparent lg:dark:bg-transparent px-5 sm:px-7.5 py-2.5 sm:py-5 lg:px-0 lg:py-0">
+                <ul class="text-lg leading-none text-title dark:text-white lg:flex lg:gap-7.5">
+                    {% if section.settings.menu != blank %}
+                        {% for link in section.settings.menu.links %}
+                            {% if link.links != blank %}
+                                {% assign is_mega_menu = false %}
+                                {% for childlink in link.links %}
+                                    {% if childlink.links != blank %}
+                                        {% assign is_mega_menu = true %}
+                                        {% break %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                <li class="group {% unless is_mega_menu %}relative{% endunless %}">
+                                    <a href="{{ link.url }}" class="transition-all duration-300 hover:text-[#BB976D]">
+                                            {{ link.title }}
+                                        <span class="menu-list-toggle-icon text-lg! leading-none! font-medium!">
+                                            <span class="plus-icon transition-all duration-300">+</span>
+                                            <span class="minus-icon transition-all duration-300 text-[#BB976D]">−</span>
+                                        </span>
+                                    </a>
+                                    
+                                    {% if is_mega_menu %}
+                                        <div class="mega-menu lg:absolute z-50 lg:top-full lg:left-1/2 lg:max-w-275 lg:w-full lg:bg-[#172430] lg:px-[30px] lg:py-[10px] lg:flex lg:items-start lg:justify-between lg:invisible lg:opacity-0 group-hover:lg:visible group-hover:lg:opacity-100 lg:transition-all lg:duration-300 lg:translateX(0)">
+                                            <div class="lg:grid lg:items-start gap-x-5 lg:gap-x-7! lg:flex-1" style="grid-template-columns: repeat({{ link.links.size }}, minmax(0, 1fr));">
+                                                {% for childlink in link.links %}
+                                                    <div class="megamenu-item">
+                                                        <ul>
+                                                            {% if childlink.links != blank %}
+                                                                {% for grandchildlink in childlink.links %}
+                                                                    <li><a href="{{ grandchildlink.url }}">{{ grandchildlink.title }}</a></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><a href="{{ childlink.url }}">{{ childlink.title }}</a></li>
+                                                            {% endif %}
+                                                        </ul>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <ul class="sub-menu lg:absolute z-50 lg:top-full lg:left-0 lg:min-w-55 lg:invisible lg:opacity-0 group-hover:lg:visible group-hover:lg:opacity-100 lg:transition-all lg:bg-[#172430] lg:px-[30px] flex flex-col px-[10px]">
+                                            {% for childlink in link.links %}
+                                                <li><a href="{{ childlink.url }}">{{ childlink.title }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% else %}
+                                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <li><a href="{{ routes.root_url }}">Home</a></li>
+                    {% endif %}
+                    
+                    {% if section.settings.enable_login_link %}
+                        <li class="lg:hidden"><a href="{{ routes.account_url }}">{{ section.settings.login_text }}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Header Right -->
+            <div class="flex items-center gap-4 sm:gap-6">
+                {% if section.settings.enable_login_link %}
+                <a href="{{ routes.account_url }}" class="text-lg leading-none text-title dark:text-white transition-all duration-300 hover:text-primary hidden lg:block">
+                    {{ section.settings.login_text }}
+                </a>
+                {% endif %}
+                
+                {% if section.settings.enable_search %}
+                <!-- Search -->
+                <button class="hdr_search_btn" aria-label="search">
+                    <svg class="fill-current text-title dark:text-white w-[18px] sm:w-[20px]" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.0703125 9.24982C0.0703125 4.18191 4.19363 0.0585938 9.26154 0.0585938C14.3297 0.0585938 18.4528 4.18191 18.4528 9.24982C18.4528 11.4791 17.655 13.5255 16.3301 15.1187L20.6993 19.4879C21.0307 19.819 21.0307 20.3564 20.6993 20.6876C20.5335 20.8533 20.3163 20.9361 20.0994 20.9361C19.8822 20.9361 19.6653 20.8533 19.4996 20.6876L15.1304 16.3183C13.5373 17.6433 11.4908 18.441 9.26154 18.441C4.19363 18.441 0.0703125 14.318 0.0703125 9.24982ZM1.76716 9.24986C1.76716 13.3822 5.12917 16.7442 9.26154 16.7442C13.3939 16.7442 16.7559 13.3822 16.7559 9.24982C16.7559 5.11745 13.3939 1.75544 9.26154 1.75544C5.12917 1.75544 1.76716 5.11749 1.76716 9.24986Z"/>
+                    </svg>
+                </button>
+                {% endif %}
+                
+                {% if section.settings.enable_wishlist %}
+                <!-- WishList -->
+                <div class="relative group flex items-center gap-4 sm:gap-6">
+                    <button class="relative hdr_wishList_btn">
+                        {% if section.settings.show_wishlist_count %}
+                        <span class="absolute w-5.5 h-5.5 bg-secondary -top-2.5 -right-2.75 rounded-full flex items-center justify-center text-xs leading-none text-white">{{ section.settings.wishlist_count }}</span>
+                        {% endif %}
+                        <svg class="fill-current text-title dark:text-white w-5.5 sm:w-6.25" viewBox="0 0 25 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.9005 0.591797C15.9541 0.591797 14.2479 1.45969 12.9662 3.10171C12.7953 3.3207 12.6429 3.53979 12.5079 3.75198C12.3728 3.53974 12.2205 3.3207 12.0496 3.10171C10.7679 1.45969 9.06162 0.591797 7.11524 0.591797C3.43837 0.591797 0.808594 3.67049 0.808594 7.36477C0.808594 11.589 4.27071 15.5701 12.0343 20.2733C12.1798 20.3614 12.3439 20.4055 12.5079 20.4055C12.6719 20.4055 12.8359 20.3615 12.9815 20.2733C20.7451 15.5702 24.2072 11.589 24.2072 7.36482C24.2072 3.67246 21.5795 0.591797 17.9005 0.591797ZM19.9642 12.6247C18.3479 14.4281 15.9055 16.327 12.5079 18.4205C9.11029 16.327 6.66784 14.4281 5.05155 12.6247C3.42654 10.8115 2.63661 9.09096 2.63661 7.36482C2.63661 4.70487 4.43419 2.41981 7.11524 2.41981C8.48059 2.41981 9.64476 3.01346 10.5754 4.1843C11.3196 5.12066 11.6332 6.08754 11.6354 6.09444C11.7544 6.47626 12.108 6.73634 12.5079 6.73634C12.9079 6.73634 13.2614 6.47631 13.3805 6.09444C13.3834 6.08521 13.6875 5.14849 14.4072 4.22644C15.3429 3.02762 16.5183 2.41976 17.9005 2.41976C20.5844 2.41976 22.3792 4.70702 22.3792 7.36477C22.3792 9.09092 21.5892 10.8114 19.9642 12.6247Z"/>
+                        </svg>
+                    </button>
+                    <div class="wishlist_popup w-80 md:w-96 absolute z-50 top-full right-0 bg-[#172430] py-5 md:py-[30px] pl-5 md:pl-[30px] pr-[10px] md:pr-[15px] border border-primary invisible opacity-0 transition-all duration-300 mt-5">
+                    <h4 class="font-medium leading-none dark:text-white mb-4 text-xl md:text-2xl">{{ section.settings.wishlist_title }}</h4>
+                    <div>
+                        <div class="pr-4 md:pr-5 wishlist-item">
+                            <a href="product-details.html" class="flex items-center gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk">
+                                <img class="w-[70px] md:w-auto" src="./img/gallery/wishList-01.jpg" alt="wishlist">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[14px] md:text-[15px] leading-none block">Sofa</span>
+                                        <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                        <span class="text-[14px] md:text-[15px] leading-none block">$65.90</span>
+                                    </div>
+                                    <h6 class="text-base md:text-lg font-semibold leading-none mt-3">Modern Sofa Set</h6>
+                                </div>
+                                <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group duration-300 hover:bg-primary dark:hover:bg-primary">
+                                    <svg class="fill-current text-title dark:text-white duration-300 group-hover:text-white" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                    </svg>
+                                </div>
+                            </a>
+                            <a href="product-details.html" class="flex items-center gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk">
+                                <img class="w-[70px] md:w-auto" src="./img/gallery/wishList-02.jpg" alt="wishlist">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[14px] md:text-[15px] leading-none block">Interior</span>
+                                        <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                        <span class="text-[14px] md:text-[15px] leading-none block">$99.90</span>
+                                    </div>
+                                    <h6 class="text-base md:text-lg font-semibold leading-none mt-3">Classic Chair with Vase</h6>
+                                </div>
+                                <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group duration-300 hover:bg-primary dark:hover:bg-primary">
+                                    <svg class="fill-current text-title dark:text-white duration-300 group-hover:text-white" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                    </svg>
+                                </div>
+                            </a>
+                            <a href="product-details.html" class="flex items-center gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk">
+                                <img class="w-[70px] md:w-auto" src="./img/gallery/wishList-03.jpg" alt="wishlist">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[14px] md:text-[15px] leading-none block">Lamp</span>
+                                        <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                        <span class="text-[14px] md:text-[15px] leading-none block">$30.90</span>
+                                    </div>
+                                    <h6 class="text-base md:text-lg font-semibold leading-none mt-3">Luxury Hanging Lamp</h6>
+                                </div>
+                                <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group duration-300 hover:bg-primary dark:hover:bg-primary">
+                                    <svg class="fill-current text-title dark:text-white duration-300 group-hover:text-white" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                    </svg>
+                                </div>
+                            </a>
+                            <a href="product-details.html" class="flex items-center gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk">
+                                <img class="w-[70px] md:w-auto" src="./img/gallery/wishList-04.jpg" alt="wishlist">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[14px] md:text-[15px] leading-none block">Vase</span>
+                                        <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                        <span class="text-[14px] md:text-[15px] leading-none block">$56.90</span>
+                                    </div>
+                                    <h6 class="text-base md:text-lg font-semibold leading-none mt-3">Premium Quality Vase</h6>
+                                </div>
+                                <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group duration-300 hover:bg-primary dark:hover:bg-primary">
+                                    <svg class="fill-current text-title dark:text-white duration-300 group-hover:text-white" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                    </svg>
+                                </div>
+                            </a>
+                            <a href="product-details.html" class="flex items-center gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk">
+                                <img class="w-[70px] md:w-auto" src="./img/gallery/wishList-05.jpg" alt="wishlist">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[14px] md:text-[15px] leading-none block">Chair</span>
+                                        <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                        <span class="text-[14px] md:text-[15px] leading-none block">$50.00</span>
+                                    </div>
+                                    <h6 class="text-base md:text-lg font-semibold leading-none mt-3">Classic White Chair</h6>
+                                </div>
+                                <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group duration-300 hover:bg-primary dark:hover:bg-primary">
+                                    <svg class="fill-current text-title dark:text-white duration-300 group-hover:text-white" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                    </svg>
+                                </div>
+                            </a>
+                            <a href="product-details.html" class="flex items-center gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk">
+                                <img class="w-[70px] md:w-auto" src="./img/gallery/wishList-01.jpg" alt="wishlist">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[14px] md:text-[15px] leading-none block">Sofa</span>
+                                        <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                        <span class="text-[14px] md:text-[15px] leading-none block">$30.50</span>
+                                    </div>
+                                    <h6 class="text-base md:text-lg font-semibold leading-none mt-3">Modern Sofa Set</h6>
+                                </div>
+                                <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group duration-300 hover:bg-primary dark:hover:bg-primary">
+                                    <svg class="fill-current text-title dark:text-white duration-300 group-hover:text-white" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                    </svg>
+                                </div>
+                            </a>
+                            <a href="product-details.html" class="flex items-center gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk">
+                                <img class="w-[70px] md:w-auto" src="./img/gallery/wishList-02.jpg" alt="wishlist">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[14px] md:text-[15px] leading-none block">Vase</span>
+                                        <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                        <span class="text-[14px] md:text-[15px] leading-none block">$30.00</span>
+                                    </div>
+                                    <h6 class="text-base md:text-lg font-semibold leading-none mt-3">Classic Chair with Vase</h6>
+                                </div>
+                                <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group duration-300 hover:bg-primary dark:hover:bg-primary">
+                                    <svg class="fill-current text-title dark:text-white duration-300 group-hover:text-white" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                    </svg>
+                                </div>
+                            </a>
+                            <a href="product-details.html" class="flex items-center gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk">
+                                <img class="w-[70px] md:w-auto" src="./img/gallery/wishList-03.jpg" alt="wishlist">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[14px] md:text-[15px] leading-none block">Lamp</span>
+                                        <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                        <span class="text-[14px] md:text-[15px] leading-none block">$120.00</span>
+                                    </div>
+                                    <h6 class="text-base md:text-lg font-semibold leading-none mt-3">Luxury Hanging Lamp</h6>
+                                </div>
+                                <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group duration-300 hover:bg-primary dark:hover:bg-primary">
+                                    <svg class="fill-current text-title dark:text-white duration-300 group-hover:text-white" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                    </svg>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="mt-6 md:mt-10">
+                            <a href="{{ section.settings.wishlist_page_url }}" class="btn btn-outline btn-sm w-full" data-text="{{ section.settings.view_wishlist_text }}">
+                                <span>{{ section.settings.view_wishlist_text }}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if section.settings.enable_cart %}
+                <!-- Cart -->
+                <div class="relative group">
+                    <button class="relative hdr_cart_btn">
+                        {% if section.settings.show_cart_count %}
+                        <span class="absolute w-[22px] h-[22px] bg-secondary -top-[10px] -right-[11px] rounded-full flex items-center justify-center text-xs leading-none text-white">{{ cart.item_count }}</span>
+                        {% endif %}
+                        <svg class="fill-current text-title dark:text-white w-[18px] sm:w-[19px]" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.8284 5.7238H15.2408C14.9035 2.85886 12.4608 0.628906 9.50675 0.628906C6.55269 0.628906 4.11002 2.85886 3.7727 5.7238H1.18509C0.716102 5.7238 0.335938 6.10397 0.335938 6.57295V21.518C0.335938 21.987 0.716102 22.3671 1.18509 22.3671H17.8284C18.2974 22.3671 18.6776 21.987 18.6776 21.518V6.57295C18.6776 6.10397 18.2974 5.7238 17.8284 5.7238ZM9.50675 2.3272C11.5228 2.3272 13.2014 3.79857 13.5257 5.7238H5.48777C5.81214 3.79857 7.4907 2.3272 9.50675 2.3272ZM16.9793 20.6688H2.03424V7.4221H3.73253V9.96955C3.73253 10.4385 4.1127 10.8187 4.58168 10.8187C5.05067 10.8187 5.43083 10.4385 5.43083 9.96955V7.4221H13.5827V9.96955C13.5827 10.4385 13.9628 10.8187 14.4318 10.8187C14.9008 10.8187 15.281 10.4385 15.281 9.96955V7.4221H16.9793V20.6688Z"/>
+                        </svg>
+                    </button>
+                    <div class="hdr_cart_popup w-80 md:w-96 absolute z-50 top-full right-0 bg-white dark:bg-title p-5 md:p-[30px] border border-primary invisible opacity-0 transition-all duration-300">
+                        <h4 class="font-medium leading-none mb-4 text-xl md:text-2xl">
+                            {{ section.settings.cart_title }}
+                        </h4>
+                        <div>
+                            <div class="hdr-cart-item">
+                                <div class="flex gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk group">
+                                    <a href="product-details.html" class="block">
+                                        <img class="w-[70px] md:w-auto h-full" src="./img/gallery/wishList-01.jpg" alt="cart">
+                                    </a>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[14px] md:text-[15px] leading-none block">Sofa</span>
+                                            <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                            <span class="text-[14px] md:text-[15px] leading-none block">$65.90</span>
+                                        </div>
+                                        <h6 class="text-base md:text-lg font-semibold !leading-none mt-[10px]">
+                                            <a href="product-details.html">
+                                                Modern Sofa Set
+                                            </a>
+                                        </h6>
+                                        <div class="inc-dec flex items-center gap-2 mt-4">
+                                            <div class="dec w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
+                                                <svg class="fill-current text-title dark:text-white" width="12" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M10.4361 0.203613H12.0736L7.81774 0.203615H13.8729V1.80309H7.81774L3.50809 1.80309H1.87053L6.18017 1.80309H0.125V0.203615H6.18017L10.4361 0.203613Z"/>
+                                                </svg>
+                                            </div>
+                                            <input class="w-6 h-auto outline-none bg-transparent text-base mg:text-lg leading-none text-title dark:text-white text-center" type="text" value="1">
+                                            <div class="inc w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
+                                                <svg class="fill-current text-title dark:text-white" width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6.18017 0.110352H7.81774V6.16553H13.8729V7.76501H7.81774V13.8963H6.18017V7.76501H0.125V6.16553H6.18017V0.110352Z"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group hover:bg-primary dark:hover:bg-primary opacity-0 group-hover:opacity-100 text-title dark:text-white duration-300 hover:text-white">
+                                        <svg class="fill-current" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk group">
+                                    <a href="product-details.html" class="block">
+                                        <img class="w-[70px] md:w-auto h-full" src="./img/gallery/wishList-02.jpg" alt="cart">
+                                    </a>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[14px] md:text-[15px] leading-none block">Interior</span>
+                                            <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                            <span class="text-[14px] md:text-[15px] leading-none block">$99.90</span>
+                                        </div>
+                                        <h6 class="text-base md:text-lg font-semibold leading-none mt-[10px]">
+                                            <a href="product-details.html">Classic Chair with Vase</a>
+                                        </h6>
+                                        <div class="inc-dec flex items-center gap-2 mt-4">
+                                            <div class="dec w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
+                                                <svg class="fill-current text-title dark:text-white" width="12" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M10.4361 0.203613H12.0736L7.81774 0.203615H13.8729V1.80309H7.81774L3.50809 1.80309H1.87053L6.18017 1.80309H0.125V0.203615H6.18017L10.4361 0.203613Z"/>
+                                                </svg>
+                                            </div>
+                                            <input class="w-6 h-auto outline-none bg-transparent text-base mg:text-lg leading-none text-title dark:text-white text-center" type="text" value="1">
+                                            <div class="inc w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
+                                                <svg class="fill-current text-title dark:text-white" width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6.18017 0.110352H7.81774V6.16553H13.8729V7.76501H7.81774V13.8963H6.18017V7.76501H0.125V6.16553H6.18017V0.110352Z"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group hover:bg-primary dark:hover:bg-primary opacity-0 group-hover:opacity-100 text-title dark:text-white duration-300 hover:text-white">
+                                        <svg class="fill-current" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk group">
+                                    <a href="product-details.html" class="block">
+                                        <img class="w-[70px] md:w-auto h-full" src="./img/gallery/wishList-03.jpg" alt="cart">
+                                    </a>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[14px] md:text-[15px] leading-none block">Lamp</span>
+                                            <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
+                                            <span class="text-[14px] md:text-[15px] leading-none block">$30.90</span>
+                                        </div>
+                                        <h6 class="text-base md:text-lg font-semibold leading-none mt-[10px]">
+                                            <a href="product-details.html">
+                                                Luxury Hanging Lamp
+                                            </a>
+                                        </h6>
+                                        <div class="inc-dec flex items-center gap-2 mt-4">
+                                            <div class="dec w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
+                                                <svg class="fill-current text-title dark:text-white" width="12" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M10.4361 0.203613H12.0736L7.81774 0.203615H13.8729V1.80309H7.81774L3.50809 1.80309H1.87053L6.18017 1.80309H0.125V0.203615H6.18017L10.4361 0.203613Z"/>
+                                                </svg>
+                                            </div>
+                                            <input class="w-6 h-auto outline-none bg-transparent text-base mg:text-lg leading-none text-title dark:text-white text-center" type="text" value="1">
+                                            <div class="inc w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
+                                                <svg class="fill-current text-title dark:text-white" width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6.18017 0.110352H7.81774V6.16553H13.8729V7.76501H7.81774V13.8963H6.18017V7.76501H0.125V6.16553H6.18017V0.110352Z"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group hover:bg-primary dark:hover:bg-primary opacity-0 group-hover:opacity-100 text-title dark:text-white duration-300 hover:text-white">
+                                        <svg class="fill-current" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk group">
+                                    <a href="product-details.html" class="block">
+                                        <img class="w-[70px] md:w-auto h-full" src="./img/gallery/wishList-04.jpg" alt="cart">
+                                    </a>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[14px] md:text-[15px] leading-none block">Vase</span>
+                                            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            <span class="text-[14px] md:text-[15px] leading-none block">$20.00</span>
+                                        </div>
+                                        <h6 class="text-base md:text-lg font-semibold leading-none mt-2.5">
+                                            <a href="product-details.html">
+                                                Premium Quality Vase
+                                            </a>
+                                        </h6>
+                                        <div class="inc-dec flex items-center gap-2 mt-4">
+                                            <div class="dec w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
+                                                <svg class="fill-current text-title dark:text-white" width="12" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M10.4361 0.203613H12.0736L7.81774 0.203615H13.8729V1.80309H7.81774L3.50809 1.80309H1.87053L6.18017 1.80309H0.125V0.203615H6.18017L10.4361 0.203613Z"/>
+                                                </svg>
+                                            </div>
+                                            <input class="w-6 h-auto outline-none bg-transparent text-base mg:text-lg leading-none text-title dark:text-white text-center" type="text" value="1">
+                                            <div class="inc w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
+                                                <svg class="fill-current text-title dark:text-white" width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6.18017 0.110352H7.81774V6.16553H13.8729V7.76501H7.81774V13.8963H6.18017V7.76501H0.125V6.16553H6.18017V0.110352Z"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group hover:bg-primary dark:hover:bg-primary opacity-0 group-hover:opacity-100 text-title dark:text-white duration-300 hover:text-white">
+                                        <svg class="fill-current" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-5 md:pt-7.5 mt-5 md:mt-7.5 border-t border-bdr-clr dark:border-bdr-clr-drk">
+                                <h4 class="mb-5 md:mb-7.5 font-medium leading-none! text-lg md:text-xl text-right">{{ section.settings.subtotal_text }} : {{ cart.total_price | money }}</h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <a href="{{ routes.cart_url }}" class="btn btn-outline btn-sm" data-text="{{ section.settings.view_cart_text }}">
+                                        <span>{{ section.settings.view_cart_text }}</span>
+                                    </a>
+                                    <a href="/checkout" class="btn btn-theme-solid btn-sm" data-text="{{ section.settings.checkout_text }}">
+                                        <span>{{ section.settings.checkout_text }}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if section.settings.enable_hamburger %}
+                <!-- Hamburger -->
+                <button class="hamburger">
+                    <svg class="stroke-current text-title dark:text-white" width="40" viewBox="0 0 100 100">
+                        <path class="line line1" d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058" />
+                        <path class="line line2" d="M 20,50 H 80" />
+                        <path class="line line3" d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942" />
+                    </svg>
+                </button>
+                {% endif %}
+                
+                {% if section.settings.enable_dark_mode_toggle %}
+                <!-- Dark Light -->
+                <div class="w-[1px] bg-title/20 dark:bg-white/20 h-7 hidden sm:block"></div>
+                <label class="switcher cursor-pointer order-first sm:order-last">
+                    <input class="hidden" type="checkbox">
+                    {% if section.settings.sun_icon != blank %}
+                    <img class="moon w-[22px] sm:w-7" src="{{ section.settings.sun_icon | image_url: width: 56 }}" alt="moon">
+                    {% else %}
+                    <svg class="moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    {% endif %}
+                    {% if section.settings.moon_icon != blank %}
+                    <img class="sun w-[22px] sm:w-7" src="{{ section.settings.moon_icon | image_url: width: 56 }}" alt="sun">
+                    {% else %}
+                    <svg class="sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    {% endif %}
+                </label>
+                {% endif %}
+        </div>
+    </div>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Hamburger toggle
+    const hamburger = document.querySelector('.hamburger');
+    const mainMenu = document.querySelector('.main-menu');
+    if (hamburger && mainMenu) {
+      hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('active');
+        mainMenu.classList.toggle('active');
+      });
+    }
+
+    // Wishlist popup click handler
+    const wishlistBtn = document.querySelector('.hdr_wishList_btn');
+    const wishlistPopup = document.querySelector('.wishlist_popup');
+    if (wishlistBtn && wishlistPopup) {
+      wishlistBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        wishlistPopup.classList.toggle('invisible');
+        wishlistPopup.classList.toggle('opacity-0');
+      });
+    }
+
+    // Cart popup click handler
+    const cartBtn = document.querySelector('.hdr_cart_btn');
+    const cartPopup = document.querySelector('.hdr_cart_popup');
+    if (cartBtn && cartPopup) {
+      cartBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        cartPopup.classList.toggle('invisible');
+        cartPopup.classList.toggle('opacity-0');
+      });
+    }
+
+    // Close popups when clicking outside
+    document.addEventListener('click', function(e) {
+      if (wishlistPopup && !e.target.closest('.relative.group:has(.hdr_wishList_btn)')) {
+        wishlistPopup.classList.add('invisible', 'opacity-0');
+      }
+      if (cartPopup && !e.target.closest('.relative.group:has(.hdr_cart_btn)')) {
+        cartPopup.classList.add('invisible', 'opacity-0');
+      }
+    });
+
+    // Dark mode toggle
+    const switcher = document.querySelector('.switcher input');
+    if (switcher) {
+      const isDark = localStorage.getItem('darkMode') === 'true';
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        switcher.checked = true;
+      }
+      switcher.addEventListener('change', function() {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Logo Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Width",
+      "default": 140
+    },
+    {
+      "type": "header",
+      "content": "Menu Settings"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Login Link Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_login_link",
+      "label": "Enable Login Link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "login_text",
+      "label": "Login Text",
+      "default": "Login"
+    },
+    {
+      "type": "header",
+      "content": "Search Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search",
+      "label": "Enable Search",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Wishlist Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_wishlist",
+      "label": "Enable Wishlist",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist_count",
+      "label": "Show Wishlist Count Badge",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "wishlist_count",
+      "label": "Wishlist Count (Static)",
+      "default": 14,
+      "info": "This is a static number. Integrate with wishlist app for dynamic count."
+    },
+    {
+      "type": "text",
+      "id": "wishlist_title",
+      "label": "Wishlist Popup Title",
+      "default": "Wishlist"
+    },
+    {
+      "type": "text",
+      "id": "view_wishlist_text",
+      "label": "View Wishlist Button Text",
+      "default": "View All Wishlist"
+    },
+    {
+      "type": "url",
+      "id": "wishlist_page_url",
+      "label": "Wishlist Page URL"
+    },
+    {
+      "type": "header",
+      "content": "Cart Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_cart",
+      "label": "Enable Cart",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_count",
+      "label": "Show Cart Count Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cart_title",
+      "label": "Cart Popup Title",
+      "default": "Cart List"
+    },
+    {
+      "type": "text",
+      "id": "subtotal_text",
+      "label": "Subtotal Text",
+      "default": "Subtotal"
+    },
+    {
+      "type": "text",
+      "id": "view_cart_text",
+      "label": "View Cart Button Text",
+      "default": "View Cart"
+    },
+    {
+      "type": "text",
+      "id": "checkout_text",
+      "label": "Checkout Button Text",
+      "default": "Checkout"
+    },
+    {
+      "type": "header",
+      "content": "Hamburger Menu Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hamburger",
+      "label": "Enable Hamburger Menu",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Dark Mode Toggle Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_dark_mode_toggle",
+      "label": "Enable Dark Mode Toggle",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "sun_icon",
+      "label": "Sun Icon (Light Mode)",
+      "info": "Leave empty to use default icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "moon_icon",
+      "label": "Moon Icon (Dark Mode)",
+      "info": "Leave empty to use default icon"
+    }
+  ]
+}
+{% endschema %}

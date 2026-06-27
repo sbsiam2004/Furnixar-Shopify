@@ -1,0 +1,174 @@
+<!-- Blog Start -->
+<div
+  class="latest-blog-section overflow-hidden"
+  id="latest-blog-{{ section.id }}"
+  style="
+    background-color: {{ section.settings.background_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="container-fluid">
+    <div class="max-w-[1720px] mx-auto">
+      {% render 'section-heading',
+        show_section_icon: section.settings.show_icon,
+        section_icon: section.settings.section_icon,
+        icon_color: section.settings.icon_color,
+        section_title: section.settings.section_title,
+        section_description: section.settings.section_description,
+        section_title_class: 'leading-none mt-4 md:mt-6 text-2xl! md:text-3xl! lg:text-[36px]! font-semibold text-white',
+        section_description_class: 'mt-3 text-white/75 text-base max-w-[650px] mx-auto'
+      %}
+
+      {%- liquid
+        if section.settings.blog != blank
+          assign selected_blog = section.settings.blog
+        else
+          assign selected_blog = blogs.news
+        endif
+      -%}
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 md:gap-[30px]">
+        {% for article in selected_blog.articles limit: section.settings.posts_to_show %}
+          {% render 'article-card', article: article %}
+        {% else %}
+          {% for i in (1..section.settings.posts_to_show) %}
+            {% render 'article-card', article: blank, placeholder_index: i %}
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Blog End -->
+
+{% stylesheet %}
+  .latest-blog-section .text-underline {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease;
+  }
+
+  .latest-blog-section .text-underline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.3s ease;
+  }
+
+  .latest-blog-section .group:hover .text-underline {
+    color: var(--color-primary, #c8815f);
+  }
+
+  .latest-blog-section .group:hover .text-underline::before {
+    transform: scaleX(1);
+  }
+
+  .latest-blog-section .article-card-image {
+    display: block;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Latest Blog",
+  "tag": "section",
+  "class": "latest-blog-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "section_icon",
+      "label": "Section icon"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#BB976D"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Heading",
+      "default": "Latest Blog"
+    },
+    {
+      "type": "textarea",
+      "id": "section_description",
+      "label": "Description",
+      "default": "Stay informed and inspired with our latest blog posts. Explore insightful content that keeps you ahead of trends and informed on topics you love."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#172430"
+    },
+    {
+      "type": "header",
+      "content": "Blog posts"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "posts_to_show",
+      "label": "Posts to show",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Latest Blog"
+    }
+  ]
+}
+{% endschema %}
