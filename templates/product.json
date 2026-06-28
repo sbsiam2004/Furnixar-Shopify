@@ -11,14 +11,19 @@
   "sections": {
     "product_banner": {
       "type": "product-bennar",
-      "settings": {}
+      "settings": {
+        "background_color": "#1E2A35",
+        "text_color": "#ffffff",
+        "active_text_color": "#c8815f",
+        "link_hover_color": "#c8815f",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
     },
     "main": {
       "type": "main-product",
       "settings": {
         "background_color": "#172430",
-        "show_sale_badge": false,
-        "sale_badge_text": "-10%",
         "show_countdown": true,
         "sale_end_date": "2026-12-31 23:59",
         "fallback_description": "Experience the epitome of relaxation with our Classic Relaxable Chair. Crafted with plush cushioning and ergonomic design, it offers unparalleled comfort for lounging or reading.",
@@ -60,8 +65,8 @@
       "type": "featured-products",
       "name": "Featured Products",
       "settings": {
-        "show_icon": true,
-        "icon_color": "#BB976D",
+        "show_icon": false,
+        "icon_color": "#bb976d",
         "section_title": "New Products",
         "section_description": "Be the first to experience innovation with our latest arrivals. Stay ahead of the curve and discover what's new in style, technology, and more.",
         "background_color": "#172430",

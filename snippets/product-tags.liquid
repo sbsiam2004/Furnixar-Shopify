@@ -1,15 +1,30 @@
+{%- liquid
+  assign is_search = search_mode | default: false
+  assign tag_limit = tag_limit | default: 8
+-%}
+
 <div class="flex flex-wrap gap-[10px] md:gap-[15px] mt-5 md:mt-6">
-  {% if product.tags.size > 0 %}
-    {% for tag in product.tags limit: 8 %}
+  {% if is_search == false and product != blank and product.tags.size > 0 %}
+    {% for tag in product.tags limit: tag_limit %}
       <a class="btn btn-theme-outline btn-xs" href="{{ routes.search_url }}?type=product&q={{ tag | url_encode }}" data-text="{{ tag }}">
         <span>{{ tag }}</span>
       </a>
     {% endfor %}
   {% else %}
-    <a class="btn btn-theme-outline btn-xs" href="{{ routes.all_products_collection_url }}" data-text="Chair"><span>Chair</span></a>
-    <a class="btn btn-theme-outline btn-xs" href="{{ routes.all_products_collection_url }}" data-text="Art & Paint"><span>Art & Paint</span></a>
-    <a class="btn btn-theme-outline btn-xs" href="{{ routes.all_products_collection_url }}" data-text="Mirror"><span>Mirror</span></a>
-    <a class="btn btn-theme-outline btn-xs" href="{{ routes.all_products_collection_url }}" data-text="Table"><span>Table</span></a>
-    <a class="btn btn-theme-outline btn-xs" href="{{ routes.all_products_collection_url }}" data-text="Lamp"><span>Lamp</span></a>
+    {%- liquid
+      if popular_tags != blank
+        assign tags_list = popular_tags | split: ','
+      else
+        assign tags_list = 'Chair,Art & Paint,Mirror,Table,Lamp' | split: ','
+      endif
+    -%}
+    {% for tag in tags_list %}
+      {%- assign tag_name = tag | strip -%}
+      {% if tag_name != blank %}
+        <a class="btn btn-theme-outline btn-xs" href="{{ routes.search_url }}?type=product&q={{ tag_name | url_encode }}" data-text="{{ tag_name }}">
+          <span>{{ tag_name }}</span>
+        </a>
+      {% endif %}
+    {% endfor %}
   {% endif %}
 </div>

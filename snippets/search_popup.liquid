@@ -1,0 +1,48 @@
+<div
+  class="search_popup fixed top-0 left-0 bg-[#172430]/90 dark:bg-[#39434D]/80 backdrop-blur-[3px] dark:backdrop-blur-[7.5px] w-full h-screen z-[999] px-[15px] md:px-[30px] py-12 md:py-[70px] overflow-y-auto transform scale-90 opacity-0 invisible transition-all duration-300 flex items-center justify-center"
+  data-search-popup
+  aria-hidden="true"
+>
+  <div class="container">
+    <div class="relative max-w-4xl mx-auto hdr-search-wrapper">
+      <button type="button" class="hdr_search_close w-[36px] h-[36px] absolute bottom-full md:top-0 right-0 flex items-center justify-center bg-title dark:bg-white text-white" aria-label="Close search">
+        <svg class="fill-current text-white" width="15" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.742 12.0717C11.6006 12.2131 11.445 12.2838 11.2753 12.2838C11.1056 12.2838 10.9501 12.2131 10.8086 12.0717L6.16295 7.42598L1.55968 12.0292C1.41826 12.1707 1.2627 12.2414 1.09299 12.2414C0.923289 12.2414 0.767726 12.1707 0.626304 12.0292L0.32932 11.7323C0.187898 11.5908 0.117187 11.4353 0.117188 11.2656C0.117187 11.0959 0.187898 10.9403 0.329319 10.7989L4.93258 6.19561L0.414172 1.6772C0.272751 1.53578 0.20204 1.38021 0.20204 1.21051C0.20204 1.0408 0.272751 0.885239 0.414172 0.743817L0.73237 0.42562C0.873792 0.284198 1.02935 0.213487 1.19906 0.213487C1.36877 0.213488 1.52433 0.284198 1.66575 0.42562L6.18416 4.94403L10.8086 0.319553C10.9501 0.178132 11.1056 0.107421 11.2753 0.107422C11.445 0.107422 11.6006 0.178133 11.742 0.319554L12.039 0.616539C12.1804 0.75796 12.2511 0.913524 12.2511 1.08323C12.2511 1.25293 12.1804 1.4085 12.039 1.54992L7.41453 6.1744L12.0602 10.8201C12.2016 10.9615 12.2724 11.1171 12.2724 11.2868C12.2724 11.4565 12.2016 11.612 12.0602 11.7535L11.742 12.0717Z"/>
+        </svg>
+      </button>
+
+      <div class="bg-[#172430] py-8 sm:py-10 md:py-[60px] px-5 sm:px-8">
+        <!-- Input -->
+        <form class="relative" action="{{ routes.search_url }}" method="get" data-search-form>
+          <input type="hidden" name="type" value="product">
+          <input
+            class="outline-none border-b border-bdr-clr dark:border-bdr-clr-drk pb-4 md:pb-[22px] w-full pr-7 md:pr-10 leading-none font-lg bg-transparent dark:bg-transparent text-white placeholder:text-white"
+            type="search"
+            name="q"
+            placeholder="{{ section.settings.search_placeholder | default: 'Type your keyword' }}"
+            autocomplete="off"
+            data-search-input
+          >
+          <button type="submit" class="absolute right-0 top-0" aria-label="Search">
+            <svg class="fill-current text-white w-5 md:w-[30px]" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M29.5439 28.2361L22.1484 20.5625C24.0499 18.3074 25.0917 15.4701 25.0917 12.5162C25.0917 5.61489 19.4635 0 12.5459 0C5.62818 0 0 5.61489 0 12.5162C0 19.4176 5.62818 25.0325 12.5459 25.0325C15.1429 25.0325 17.6177 24.251 19.7335 22.7676L27.1852 30.4994C27.4967 30.8221 27.9156 31 28.3646 31C28.7895 31 29.1926 30.8384 29.4986 30.5445C30.1488 29.9203 30.1695 28.8853 29.5439 28.2361ZM12.5459 3.26511C17.6591 3.26511 21.8189 7.41506 21.8189 12.5162C21.8189 17.6174 17.6591 21.7674 12.5459 21.7674C7.43261 21.7674 3.27283 17.6174 3.27283 12.5162C3.27283 7.41506 7.43261 3.26511 12.5459 3.26511Z"/>
+            </svg>
+          </button>
+        </form>
+
+        <!-- Search Results -->
+        <div class="mt-6 md:mt-8 hidden" data-search-results>
+          <h4 class="font-medium leading-none text-white mb-4 md:mb-5">{{ section.settings.search_results_title | default: 'Products' }}</h4>
+          <ul class="space-y-3 md:space-y-4" data-search-results-list></ul>
+          <p class="hidden text-sm text-white/70 mt-4" data-search-empty>No products found.</p>
+        </div>
+
+        <!-- Tags -->
+        <div class="mt-10 md:mt-12" data-search-tags>
+          <h4 class="font-medium leading-none text-white">{{ section.settings.popular_tags_title | default: 'Popular Tags' }}</h4>
+          {% render 'product-tags', search_mode: true, popular_tags: section.settings.popular_tags %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

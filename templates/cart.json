@@ -1,8 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "cart_banner": {
       "type": "cart-bennar",
-      "settings": {}
+      "settings": {
+        "heading": "Cart",
+        "background_image": "shopify://shop_images/Rectangle_899.png",
+        "overlay_color": "#172430",
+        "overlay_opacity": 70,
+        "text_color": "#ffffff",
+        "active_text_color": "#c8815f",
+        "link_hover_color": "#c8815f",
+        "padding_top": 65,
+        "padding_bottom": 65
+      }
     },
     "main": {
       "type": "main-cart",
@@ -11,12 +30,32 @@
         "text_color": "#ffffff",
         "padding_top": 100,
         "padding_bottom": 100,
+        "col_product_info": "Product Info",
+        "col_price": "Price",
+        "col_quantity": "Quantity",
+        "col_total": "Total",
+        "col_remove": "Remove",
         "show_promo_code": true,
+        "promo_title": "Promo Code",
+        "promo_placeholder": "Coupon Code",
+        "promo_button_text": "Apply",
+        "subtotal_label": "Sub Total:",
+        "discount_label": "Coupon Discount:",
         "show_vat": true,
+        "vat_label": "VAT:",
         "vat_percentage": 0,
+        "total_label": "Total:",
         "show_shipping_options": true,
+        "shipping_free_label": "Free Shipping:",
+        "shipping_fast_label": "Fast Shipping:",
         "shipping_fast_price": 10,
-        "shipping_pickup_price": 15
+        "shipping_pickup_label": "Local Pickup:",
+        "shipping_pickup_price": 15,
+        "continue_shopping_text": "Continue Shopping",
+        "continue_shopping_url": "",
+        "checkout_text": "Checkout",
+        "empty_cart_title": "Your cart is empty",
+        "empty_cart_text": "Looks like you have not added anything to your cart yet."
       }
     }
   },
