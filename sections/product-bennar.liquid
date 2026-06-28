@@ -1,23 +1,107 @@
 <!-- Banner Start -->
-<div class="product-banner-section bg-[#172430] py-5 md:py-[30px]">
+<div
+  class="product-banner-section"
+  style="
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
   <div class="container-fluid">
     <ul class="flex items-center gap-[10px] text-base md:text-lg leading-none max-w-[1720px] mx-auto flex-wrap">
-      <li><a href="{{ routes.root_url }}" class="font-semibold text-white hover:text-primary transition-colors">Home</a></li>
-      <li class="font-normal text-white">/</li>
-      <li><a href="{{ routes.all_products_collection_url }}" class="font-semibold text-white hover:text-primary transition-colors">Shop</a></li>
-      <li class="font-normal text-white">/</li>
-      <li class="text-primary font-normal">{{ product.title }}</li>
+      <li>
+        <a
+          href="{{ routes.root_url }}"
+          class="font-semibold transition-colors product-banner-link"
+          style="color: {{ section.settings.text_color }};"
+        >
+          Home
+        </a>
+      </li>
+      <li class="font-normal" style="color: {{ section.settings.text_color }};">/</li>
+      <li>
+        <a
+          href="{{ routes.all_products_collection_url }}"
+          class="font-semibold transition-colors product-banner-link"
+          style="color: {{ section.settings.text_color }};"
+        >
+          Shop
+        </a>
+      </li>
+      <li class="font-normal" style="color: {{ section.settings.text_color }};">/</li>
+      <li class="font-normal" style="color: {{ section.settings.active_text_color }};">{{ product.title }}</li>
     </ul>
   </div>
 </div>
 <!-- Banner End -->
+
+{% style %}
+  #shopify-section-{{ section.id }} .product-banner-link:hover {
+    color: {{ section.settings.link_hover_color }} !important;
+  }
+{% endstyle %}
 
 {% schema %}
 {
   "name": "Product banner",
   "tag": "section",
   "class": "product-banner-wrapper",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#172430"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "active_text_color",
+      "label": "Active text color",
+      "info": "Product title color",
+      "default": "#c8815f"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color",
+      "default": "#c8815f"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    }
+  ],
   "presets": [
     {
       "name": "Product banner"

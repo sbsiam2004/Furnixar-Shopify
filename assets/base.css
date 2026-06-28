@@ -352,3 +352,64 @@ select {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.btn-theme-outline {
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  background: transparent;
+}
+
+.btn-theme-outline.btn-xs {
+  padding: 10px 15px 9px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.btn-theme-outline span {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.btn-theme-outline::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary, #c8815f);
+  color: #fff;
+  -webkit-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+  transition: transform 0.3s ease;
+}
+
+.btn-theme-outline:hover {
+  border-color: var(--color-primary, #c8815f);
+}
+
+.btn-theme-outline:hover span {
+  -webkit-transform: translate3d(0, 100%, 0);
+  transform: translate3d(0, 100%, 0);
+  opacity: 0;
+}
+
+.btn-theme-outline:hover::before {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}

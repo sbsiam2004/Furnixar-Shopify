@@ -3,9 +3,44 @@
   assign compare_at_price = current_variant.compare_at_price
   assign price = current_variant.price
   assign price_discount = 0
+  assign gallery_badge_type = blank
+  assign gallery_badge_text = blank
+  assign tag_badge_type = blank
+  assign tag_badge_text = blank
+  assign has_new_tag = false
+  assign has_hot_sale_tag = false
 
   if compare_at_price > price
     assign price_discount = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round
+  endif
+
+  for tag in product.tags
+    assign tag_downcase = tag | downcase | strip
+
+    if tag_downcase == 'hot sale' or tag_downcase == 'hot-sale' or tag_downcase == 'hotsale'
+      assign has_hot_sale_tag = true
+    elsif tag_downcase == 'new'
+      assign has_new_tag = true
+    endif
+  endfor
+
+  if has_hot_sale_tag
+    assign tag_badge_type = 'hot-sale'
+    assign tag_badge_text = 'Hot Sale'
+  elsif has_new_tag
+    assign tag_badge_type = 'new'
+    assign tag_badge_text = 'New'
+  endif
+
+  if compare_at_price > price
+    assign gallery_badge_type = 'discount'
+    assign gallery_badge_text = '-' | append: price_discount | append: '%'
+  elsif has_hot_sale_tag
+    assign gallery_badge_type = tag_badge_type
+    assign gallery_badge_text = tag_badge_text
+  elsif has_new_tag
+    assign gallery_badge_type = tag_badge_type
+    assign gallery_badge_text = tag_badge_text
   endif
 -%}
 
@@ -24,18 +59,14 @@
     <div class="max-w-[1720px] mx-auto flex justify-between gap-10 flex-col lg:flex-row">
       <div class="w-full lg:w-[58%]">
         <div class="relative product-dtls-wrapper">
-          {% if compare_at_price > price %}
-            <span class="absolute top-5 left-0 z-50 p-2 bg-[#E13939] text-lg leading-none text-white font-medium" data-gallery-discount>
-              -{{ price_discount }}%
-            </span>
-          {% else %}
-            <span class="absolute top-5 left-0 z-50 p-2 bg-[#E13939] text-lg leading-none text-white font-medium hidden" data-gallery-discount></span>
-          {% endif %}
-          {% if compare_at_price <= price and section.settings.show_sale_badge %}
-            <span class="absolute top-5 left-0 z-50 p-2 bg-[#E13939] text-lg leading-none text-white font-medium">
-              {{ section.settings.sale_badge_text }}
-            </span>
-          {% endif %}
+          <span
+            class="absolute top-5 left-0 z-50 px-3 py-2 bg-[#E13939] text-lg leading-none text-white font-medium{% if gallery_badge_text == blank %} hidden{% endif %}"
+            data-product-gallery-badge
+            data-fallback-text="{{ tag_badge_text | escape }}"
+            data-fallback-type="{{ tag_badge_type }}"
+          >
+            {{ gallery_badge_text }}
+          </span>
 
           {% render 'product-gallery', product: product, section_id: section.id %}
         </div>
@@ -157,7 +188,8 @@
   }
 
   .main-product-section .product-dtls-slider {
-    flex: 1;
+    max-width: 783px;
+    width: 100%;
     min-width: 0;
   }
 
@@ -171,7 +203,7 @@
 
   @media (min-width: 1024px) {
     .main-product-section .product-dtls-nav {
-      width: 110px;
+      width: 188px;
     }
   }
 
@@ -266,24 +298,6 @@
     color: #fff;
   }
 
-  .main-product-section .btn-theme-outline.btn-xs {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 15px 9px ; 
-    font-size: 14px;
-    line-height: 100%;
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .main-product-section .btn-theme-outline.btn-xs:hover {
-    border-color: var(--color-primary, #c8815f);
-    color: var(--color-primary, #c8815f);
-  }
-
   .main-product-section .inc-dec .dec,
   .main-product-section .inc-dec .inc {
     cursor: pointer;
@@ -331,7 +345,7 @@
     var priceEl = root.querySelector('[data-product-price-value]');
     var compareEl = root.querySelector('[data-compare-price]');
     var discountEl = root.querySelector('[data-discount-badge]');
-    var galleryDiscountEl = root.querySelector('[data-gallery-discount]');
+    var galleryBadgeEl = root.querySelector('[data-product-gallery-badge]');
     var skuEl = root.querySelector('[data-variant-sku]');
     var submitBtn = form ? form.querySelector('[type="submit"]') : null;
     var submitText = submitBtn ? submitBtn.querySelector('span') : null;
@@ -466,6 +480,28 @@
       return Math.round((comparePrice - currentPrice) * 100 / comparePrice);
     }
 
+    function updateGalleryBadge(discount) {
+      if (!galleryBadgeEl) return;
+
+      if (discount > 0) {
+        galleryBadgeEl.textContent = '-' + discount + '%';
+        galleryBadgeEl.dataset.badgeType = 'discount';
+        galleryBadgeEl.classList.remove('hidden');
+        return;
+      }
+
+      var fallbackText = galleryBadgeEl.dataset.fallbackText || '';
+      var fallbackType = galleryBadgeEl.dataset.fallbackType || '';
+
+      if (fallbackText) {
+        galleryBadgeEl.textContent = fallbackText;
+        galleryBadgeEl.dataset.badgeType = fallbackType;
+        galleryBadgeEl.classList.remove('hidden');
+      } else {
+        galleryBadgeEl.classList.add('hidden');
+      }
+    }
+
     function updateVariantUI(variant) {
       if (!variant) return;
 
@@ -494,13 +530,8 @@
         }
       }
 
-      if (galleryDiscountEl) {
-        if (discount > 0) {
-          galleryDiscountEl.textContent = '-' + discount + '%';
-          galleryDiscountEl.classList.remove('hidden');
-        } else {
-          galleryDiscountEl.classList.add('hidden');
-        }
+      if (galleryBadgeEl) {
+        updateGalleryBadge(discount);
       }
 
       if (skuEl) skuEl.textContent = variant.sku || 'N/A';
@@ -709,16 +740,12 @@
       "default": "#172430"
     },
     {
-      "type": "checkbox",
-      "id": "show_sale_badge",
-      "label": "Show sale badge when no compare price",
-      "default": false
+      "type": "header",
+      "content": "Product badge"
     },
     {
-      "type": "text",
-      "id": "sale_badge_text",
-      "label": "Sale badge text",
-      "default": "-10%"
+      "type": "paragraph",
+      "content": "Shows discount % when compare-at price is set. Otherwise shows Hot Sale or New if the product has those tags."
     },
     {
       "type": "checkbox",
