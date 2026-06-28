@@ -115,6 +115,7 @@
         {% capture product_form_id %}product-form-{{ section.id }}{% endcapture %}
         {% form 'product', product, id: product_form_id, class: 'product-form' %}
           <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+          <input type="hidden" name="return_to" value="{{ routes.cart_url }}">
 
           {% render 'product-quantity', product: product, section_id: section.id %}
 
@@ -632,6 +633,76 @@
       incBtn.addEventListener('click', function () {
         var value = parseInt(quantityInput.value, 10) || 1;
         quantityInput.value = value + 1;
+      });
+    }
+
+    if (form) {
+      var cartUrl = {{ routes.cart_url | json }};
+      var defaultSubmitText = submitText ? submitText.textContent : 'Add to Cart';
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        if (submitBtn && submitBtn.disabled) return;
+
+        var variant = findVariant();
+        if (!variant) {
+          window.alert('Please select a valid product option.');
+          return;
+        }
+
+        if (!variant.available) {
+          window.alert('This product is currently sold out.');
+          return;
+        }
+
+        if (variantInput) variantInput.value = String(variant.id);
+
+        var quantity = parseInt(quantityInput ? quantityInput.value : '1', 10) || 1;
+        if (quantity < 1) quantity = 1;
+        if (quantityInput) quantityInput.value = String(quantity);
+
+        if (submitBtn) submitBtn.disabled = true;
+        if (submitText) submitText.textContent = 'Adding...';
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({
+            items: [
+              {
+                id: variant.id,
+                quantity: quantity
+              }
+            ]
+          })
+        })
+          .then(function (response) {
+            return response.json().then(function (data) {
+              if (!response.ok) {
+                throw new Error(data.description || data.message || 'Unable to add to cart');
+              }
+              return data;
+            });
+          })
+          .then(function () {
+            window.location.href = cartUrl;
+          })
+          .catch(function (error) {
+            if (error && error.message) {
+              if (submitBtn) {
+                submitBtn.disabled = !(variant && variant.available);
+              }
+              if (submitText) submitText.textContent = defaultSubmitText;
+              window.alert(error.message);
+              return;
+            }
+
+            form.submit();
+          });
       });
     }
 

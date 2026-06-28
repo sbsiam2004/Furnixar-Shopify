@@ -1,0 +1,149 @@
+<!-- Banner Start -->
+<div
+  class="cart-banner-section flex items-center gap-4 flex-wrap bg-overlay relative overflow-hidden"
+  style="
+    color: {{ section.settings.text_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    --overlay-color: {{ section.settings.overlay_color }};
+    --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    {% if section.settings.background_image != blank %}
+      background-image: url('{{ section.settings.background_image | image_url: width: 2400 }}');
+    {% endif %}
+  "
+>
+  <div class="text-center w-full relative z-[1]">
+    <h2
+      class="text-8 md:text-[40px] font-normal leading-none text-center"
+      style="color: {{ section.settings.text_color }};"
+    >
+      {{ section.settings.heading }}
+    </h2>
+    <ul class="flex items-center justify-center gap-[10px] text-base md:text-lg leading-none font-normal mt-3 md:mt-4">
+      <li>
+        <a
+          href="{{ routes.root_url }}"
+          class="cart-banner-link transition-colors"
+          style="color: {{ section.settings.text_color }};"
+        >
+          Home
+        </a>
+      </li>
+      <li style="color: {{ section.settings.text_color }};">/</li>
+      <li class="font-normal" style="color: {{ section.settings.active_text_color }};">
+        {{ section.settings.heading }}
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- Banner End -->
+
+{% style %}
+  #shopify-section-{{ section.id }} .cart-banner-section {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  #shopify-section-{{ section.id }} .cart-banner-section.bg-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--overlay-color);
+    opacity: var(--overlay-opacity);
+    z-index: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cart-banner-link:hover {
+    color: {{ section.settings.link_hover_color }} !important;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Cart banner",
+  "tag": "section",
+  "class": "cart-banner-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Cart"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#172430"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 70
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "active_text_color",
+      "label": "Active text color",
+      "info": "Current page text color",
+      "default": "#c8815f"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color",
+      "default": "#c8815f"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 65
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart banner"
+    }
+  ]
+}
+{% endschema %}

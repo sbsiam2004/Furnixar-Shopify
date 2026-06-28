@@ -413,3 +413,125 @@ select {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
+
+/* cart page */
+
+.btn-solid {
+  border: 1px solid #fff;
+  background: #fff;
+  color: #172430;
+  padding: 0 28px;
+  min-height: 48px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .btn-solid {
+    min-height: 56px;
+  }
+}
+
+.btn-solid span {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  -webkit-transform: translate3d(0, 200%, 0);
+  transform: translate3d(0, 200%, 0);
+}
+
+.btn-solid::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #172430;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.3s ease;
+}
+
+.btn-solid:hover {
+  border-color: #BB976D;
+  color: #fff;
+  background: #BB976D;
+}
+
+@media (prefers-color-scheme: dark) {
+  .btn-solid:hover {
+    border-color: #BB976D;
+    color: #fff;
+  }
+}
+
+.btn-solid:hover::before {
+  -webkit-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+}
+
+.btn-solid:hover span {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.btn-solid-primary {
+  border: 1px solid var(--color-primary, #c8815f);
+  background: var(--color-primary, #c8815f);
+  color: #fff;
+  padding: 0 28px;
+  min-height: 48px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .btn-solid-primary {
+    min-height: 56px;
+  }
+}
+
+.btn-solid-primary span {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  color: #172430;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  -webkit-transform: translate3d(0, 200%, 0);
+  transform: translate3d(0, 200%, 0);
+}
+
+.btn-solid-primary::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary, #c8815f);
+  color: #fff;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.3s ease;
+}
+
+.btn-solid-primary:hover {
+  border-color: #fff;
+  background: #fff;
+  color: #172430;
+}
+
+.btn-solid-primary:hover::before {
+  -webkit-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+}
+
+.btn-solid-primary:hover span {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}

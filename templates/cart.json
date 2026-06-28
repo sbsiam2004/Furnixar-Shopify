@@ -1,0 +1,27 @@
+{
+  "sections": {
+    "cart_banner": {
+      "type": "cart-bennar",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "background_color": "#172430",
+        "text_color": "#ffffff",
+        "padding_top": 100,
+        "padding_bottom": 100,
+        "show_promo_code": true,
+        "show_vat": true,
+        "vat_percentage": 0,
+        "show_shipping_options": true,
+        "shipping_fast_price": 10,
+        "shipping_pickup_price": 15
+      }
+    }
+  },
+  "order": [
+    "cart_banner",
+    "main"
+  ]
+}

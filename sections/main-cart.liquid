@@ -1,0 +1,789 @@
+{%- liquid
+  assign cart_subtotal = cart.items_subtotal_price
+  assign cart_discount = cart.total_discount
+  assign discounted_subtotal = cart_subtotal | minus: cart_discount
+  assign vat_amount = 0
+
+  if section.settings.show_vat and section.settings.vat_percentage > 0
+    assign vat_amount = discounted_subtotal | times: section.settings.vat_percentage | divided_by: 100.0 | round
+  endif
+
+  assign continue_url = section.settings.continue_shopping_url
+  if continue_url == blank
+    assign continue_url = routes.all_products_collection_url
+  endif
+-%}
+
+<!-- Cart Area Start -->
+<div
+  class="main-cart-section overflow-hidden"
+  id="main-cart-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-cart-subtotal="{{ cart_subtotal }}"
+  data-cart-discount="{{ cart_discount }}"
+  data-cart-vat="{{ vat_amount }}"
+  data-vat-percentage="{{ section.settings.vat_percentage | default: 0 }}"
+  data-money-format="{{ shop.money_format | escape }}"
+  style="
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+  data-aos="fade-up"
+>
+  <div class="container">
+    {% if cart.item_count > 0 %}
+      <div class="flex xl:flex-row flex-col gap-[30px] lg:gap-[30px] xl:gap-[70px]">
+        <div class="md:max-w-[1000px] w-full ml-auto mr-auto">
+          <table id="cart-table" class="responsive nowrap table-wrapper w-full">
+            <thead class="table-header">
+              <tr>
+                <th class="text-lg md:text-xl font-semibold leading-none text-white">{{ section.settings.col_product_info }}</th>
+                <th class="text-lg md:text-xl font-semibold leading-none text-white">{{ section.settings.col_price }}</th>
+                <th class="text-lg md:text-xl font-semibold leading-none text-white">{{ section.settings.col_quantity }}</th>
+                <th class="text-lg md:text-xl font-semibold leading-none text-white">{{ section.settings.col_total }}</th>
+                <th class="text-lg md:text-xl font-semibold leading-none text-white">{{ section.settings.col_remove }}</th>
+              </tr>
+            </thead>
+            <tbody class="table-body" data-cart-lines>
+              {% for item in cart.items %}
+                <tr data-cart-line data-line-key="{{ item.key }}">
+                  <td class="md:w-[42%]">
+                    <div class="flex items-center gap-3 md:gap-4 lg:gap-6 cart-product">
+                      <div class="w-14 sm:w-20 flex-none">
+                        {% if item.image %}
+                          {{
+                            item.image
+                            | image_url: width: 160
+                            | image_tag:
+                              alt: item.image.alt,
+                              class: 'w-full h-auto object-cover',
+                              loading: 'lazy',
+                              width: 80,
+                              height: 80
+                          }}
+                        {% else %}
+                          {{ 'product-1' | placeholder_svg_tag: class: 'w-full h-auto' }}
+                        {% endif %}
+                      </div>
+                      <div class="flex-1">
+                        {% if item.product.type != blank %}
+                          <h6 class="leading-none font-medium text-white/80">{{ item.product.type }}</h6>
+                        {% endif %}
+                        <h5 class="font-semibold leading-none mt-2">
+                          <a href="{{ item.url }}" class="text-white hover:text-primary transition-colors">{{ item.product.title | escape }}</a>
+                        </h5>
+                        {% unless item.variant.title == 'Default Title' %}
+                          <p class="text-sm text-white/70 mt-1">{{ item.variant.title }}</p>
+                        {% endunless %}
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <h6 class="text-base md:text-lg leading-none text-white font-semibold" data-line-price>{{ item.final_price | money }}</h6>
+                  </td>
+                  <td>
+                    <div class="inc-dec flex items-center gap-2">
+                      <button
+                        type="button"
+                        class="dec w-8 h-8 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center"
+                        data-cart-qty-dec
+                        aria-label="Decrease quantity"
+                      >
+                        <svg class="fill-current text-white" width="14" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path d="M10.4361 0.203613H12.0736L7.81774 0.203615H13.8729V1.80309H7.81774L3.50809 1.80309H1.87053L6.18017 1.80309H0.125V0.203615H6.18017L10.4361 0.203613Z"/>
+                        </svg>
+                      </button>
+                      <input
+                        class="w-6 h-auto outline-none bg-transparent text-base md:text-lg leading-none text-white text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        type="number"
+                        value="{{ item.quantity }}"
+                        min="0"
+                        data-cart-qty-input
+                        aria-label="Quantity"
+                      >
+                      <button
+                        type="button"
+                        class="inc w-8 h-8 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center text-white"
+                        data-cart-qty-inc
+                        aria-label="Increase quantity"
+                      >
+                        <svg class="fill-current text-white" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path d="M6.18017 0.110352H7.81774V6.16553H13.8729V7.76501H7.81774V13.8963H6.18017V7.76501H0.125V6.16553H6.18017V0.110352Z"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                  <td>
+                    <h6 class="text-base md:text-lg leading-none text-white font-semibold" data-line-total>{{ item.final_line_price | money }}</h6>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      class="w-8 h-8 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center ml-auto duration-300 text-white hover:opacity-80 hover:bg-primary cursor-pointer"
+                      data-cart-remove
+                      aria-label="Remove item"
+                    >
+                      <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M0.546875 1.70822L1.70481 0.550293L5.98646 4.83195L10.2681 0.550293L11.3991 1.6813L7.11746 5.96295L11.453 10.2985L10.295 11.4564L5.95953 7.12088L1.67788 11.4025L0.546875 10.2715L4.82853 5.98988L0.546875 1.70822Z"/>
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="max-w-[1000px] xl:max-w-[405px] w-full m-auto">
+            {% if section.settings.show_promo_code %}
+                <div class="mb-[30px]">
+                <h4 class="text-lg md:text-xl font-semibold leading-none text-white mb-[15px]">
+                    {{ section.settings.promo_title }}
+                </h4>
+                <form class="flex flex-row" data-cart-discount-form>
+                    <input
+                    class="h-12 md:h-14 w-[80%] bg-snow dark:bg-dark-secondary border border-[#E3E5E6] text-white focus:border-primary p-4 outline-none duration-300 placeholder:text-title dark:placeholder:text-white"
+                    type="text"
+                    name="discount"
+                    placeholder="{{ section.settings.promo_placeholder }}"
+                    data-cart-discount-input
+                    >
+                    <button type="submit" class="btn btn-solid w-[20%]" data-text="{{ section.settings.promo_button_text }}">
+                    <span>{{ section.settings.promo_button_text }}</span>
+                    </button>
+                </form>
+                </div>
+            {% endif %}
+
+          <div class="bg-[#1e2a35] pt-[30px] md:pt-[40px] px-[30px] md:px-[40px] pb-[30px] border border-[#17243026] border-opacity-15 rounded-xl">
+            <div class="text-right flex justify-end flex-col w-full ml-auto mr-0">
+              <div class="flex justify-between flex-wrap text-base sm:text-lg text-white font-medium">
+                <span>{{ section.settings.subtotal_label }}</span>
+                <span data-cart-subtotal-display>{{ cart_subtotal | money }}</span>
+              </div>
+
+              <div class="flex justify-between flex-wrap text-base sm:text-lg text-white font-medium mt-3{% unless cart_discount > 0 %} hidden{% endunless %}" data-cart-discount-row>
+                <span>{{ section.settings.discount_label }}</span>
+                <span data-cart-discount-display>-{{ cart_discount | money }}</span>
+              </div>
+
+              {% if section.settings.show_vat %}
+                <div class="flex justify-between flex-wrap text-base sm:text-lg text-white font-medium mt-3">
+                  <span>{{ section.settings.vat_label }}</span>
+                  <span data-cart-vat-display>{{ vat_amount | money }}</span>
+                </div>
+              {% endif %}
+            </div>
+
+            {% if section.settings.show_shipping_options %}
+              <div class="mt-6 pt-6 border-t border-bdr-clr dark:border-bdr-clr-drk" data-cart-shipping>
+                <div class="flex justify-between flex-wrap text-base sm:text-lg text-white font-medium mt-3 cursor-pointer" data-shipping-option>
+                  <div>
+                    <label class="flex items-center gap-[10px] categoryies-iteem cursor-pointer">
+                      <input
+                        class="appearance-none hidden"
+                        type="radio"
+                        name="cart-shipping-{{ section.id }}"
+                        value="free"
+                        data-shipping-price="0"
+                        checked
+                      >
+                      <span class="w-4 h-4 rounded-full border border-title dark:border-white flex items-center justify-center duration-300">
+                        <svg class="duration-300 opacity-0" width="8" height="8" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="10" height="10" rx="5" fill="#BB976D"/>
+                        </svg>
+                      </span>
+                      <span class="sm:text-lg text-white block sm:leading-none transform translate-y-[3px] select-none">{{ section.settings.shipping_free_label }}</span>
+                    </label>
+                  </div>
+                  <span data-shipping-option-price>{{ 0 | money }}</span>
+                </div>
+                <div class="flex justify-between flex-wrap text-base sm:text-lg text-white font-medium mt-3 cursor-pointer" data-shipping-option>
+                  <div>
+                    <label class="flex items-center gap-[10px] categoryies-iteem cursor-pointer">
+                      <input
+                        class="appearance-none hidden"
+                        type="radio"
+                        name="cart-shipping-{{ section.id }}"
+                        value="fast"
+                        data-shipping-price="{{ section.settings.shipping_fast_price | times: 100 }}"
+                      >
+                      <span class="w-4 h-4 rounded-full border border-title dark:border-white flex items-center justify-center duration-300">
+                        <svg class="duration-300 opacity-0" width="8" height="8" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="10" height="10" rx="5" fill="#BB976D"/>
+                        </svg>
+                      </span>
+                      <span class="sm:text-lg text-white block sm:leading-none transform translate-y-[3px] select-none">{{ section.settings.shipping_fast_label }}</span>
+                    </label>
+                  </div>
+                  <span data-shipping-option-price>{{ section.settings.shipping_fast_price | times: 100 | money }}</span>
+                </div>
+                <div class="flex justify-between flex-wrap text-base sm:text-lg text-white font-medium mt-3 cursor-pointer" data-shipping-option>
+                  <div>
+                    <label class="flex items-center gap-[10px] categoryies-iteem cursor-pointer">
+                      <input
+                        class="appearance-none hidden"
+                        type="radio"
+                        name="cart-shipping-{{ section.id }}"
+                        value="pickup"
+                        data-shipping-price="{{ section.settings.shipping_pickup_price | times: 100 }}"
+                      >
+                      <span class="w-4 h-4 rounded-full border border-title dark:border-white flex items-center justify-center duration-300">
+                        <svg class="duration-300 opacity-0" width="8" height="8" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="10" height="10" rx="5" fill="#BB976D"/>
+                        </svg>
+                      </span>
+                      <span class="sm:text-lg text-white block sm:leading-none transform translate-y-[3px] select-none">{{ section.settings.shipping_pickup_label }}</span>
+                    </label>
+                  </div>
+                  <span data-shipping-option-price>{{ section.settings.shipping_pickup_price | times: 100 | money }}</span>
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="mt-6 pt-6 border-t border-bdr-clr dark:border-bdr-clr-drk">
+              <div class="flex justify-between flex-wrap font-semibold leading-none text-2xl text-white">
+                <span>{{ section.settings.total_label }}</span>
+                <span data-cart-grand-total-display>{{ discounted_subtotal | plus: vat_amount | money }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sm:mt-[10px] py-5 flex items-end gap-3 flex-wrap justify-end w-full">
+            <a href="{{ continue_url }}" class="btn btn-solid" data-text="{{ section.settings.continue_shopping_text }}">
+              <span>{{ section.settings.continue_shopping_text }}</span>
+            </a>
+            <a href="/checkout" class="btn btn-solid-primary" data-text="{{ section.settings.checkout_text }}">
+              <span>{{ section.settings.checkout_text }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="text-center py-10 md:py-16">
+        <h3 class="text-2xl md:text-3xl font-semibold text-white leading-none">{{ section.settings.empty_cart_title }}</h3>
+        <p class="mt-4 text-white/75 text-base md:text-lg">{{ section.settings.empty_cart_text }}</p>
+        <a href="{{ continue_url }}" class="btn btn-theme-solid mt-8 inline-flex !text-white hover:!text-primary before:!z-[-1]" data-text="{{ section.settings.continue_shopping_text }}">
+          <span>{{ section.settings.continue_shopping_text }}</span>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+<!-- Cart Area End -->
+
+{% stylesheet %}
+  #shopify-section-{{ section.id }} .table-wrapper {
+    border-collapse: collapse;
+  }
+
+  #shopify-section-{{ section.id }} .table-header th {
+    padding: 0 0 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  #shopify-section-{{ section.id }} .table-header th:last-child {
+    text-align: right;
+  }
+
+  #shopify-section-{{ section.id }} .table-body td {
+    padding: 24px 16px 24px 0;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  #shopify-section-{{ section.id }} .table-body td:last-child {
+    padding-right: 0;
+    text-align: right;
+  }
+
+  #shopify-section-{{ section.id }} .table-body tr:last-child td {
+    border-bottom: 0;
+  }
+
+  #shopify-section-{{ section.id }} .categoryies-iteem input:checked + span svg {
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} .main-cart-section.is-updating {
+    opacity: 0.65;
+    pointer-events: none;
+  }
+
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .table-wrapper,
+    #shopify-section-{{ section.id }} .table-wrapper thead,
+    #shopify-section-{{ section.id }} .table-wrapper tbody,
+    #shopify-section-{{ section.id }} .table-wrapper th,
+    #shopify-section-{{ section.id }} .table-wrapper td,
+    #shopify-section-{{ section.id }} .table-wrapper tr {
+      width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .table-body td {
+      padding: 12px 0;
+      border-bottom: 0;
+    }
+
+    #shopify-section-{{ section.id }} .table-body tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 16px 0;
+    }
+
+    #shopify-section-{{ section.id }} .table-body tr:last-child {
+      border-bottom: 0;
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  (function () {
+    var root = document.getElementById('main-cart-{{ section.id }}');
+    if (!root) return;
+
+    var moneyFormat = root.dataset.moneyFormat || '${{amount}}';
+    var linesRoot = root.querySelector('[data-cart-lines]');
+    var subtotalDisplay = root.querySelector('[data-cart-subtotal-display]');
+    var discountRow = root.querySelector('[data-cart-discount-row]');
+    var discountDisplay = root.querySelector('[data-cart-discount-display]');
+    var vatDisplay = root.querySelector('[data-cart-vat-display]');
+    var grandTotalDisplay = root.querySelector('[data-cart-grand-total-display]');
+    var discountForm = root.querySelector('[data-cart-discount-form]');
+    var shippingRoot = root.querySelector('[data-cart-shipping]');
+
+    function formatMoney(cents) {
+      if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
+        return window.Shopify.formatMoney(cents, moneyFormat);
+      }
+      return (cents / 100).toFixed(2);
+    }
+
+    function setUpdating(isUpdating) {
+      root.classList.toggle('is-updating', isUpdating);
+    }
+
+    function getSelectedShippingPrice() {
+      if (!shippingRoot) return 0;
+
+      var selected = shippingRoot.querySelector('input[type="radio"]:checked');
+      if (!selected) return 0;
+
+      return parseInt(selected.getAttribute('data-shipping-price') || '0', 10) || 0;
+    }
+
+    function recalculateOrderTotal() {
+      var subtotal = parseInt(root.dataset.cartSubtotal, 10) || 0;
+      var discount = parseInt(root.dataset.cartDiscount, 10) || 0;
+      var discounted = Math.max(0, subtotal - discount);
+      var vatRate = parseFloat(root.dataset.vatPercentage || '0') || 0;
+      var vat = 0;
+
+      if (vatRate > 0) {
+        vat = Math.round(discounted * vatRate / 100);
+        root.dataset.cartVat = String(vat);
+        if (vatDisplay) vatDisplay.textContent = formatMoney(vat);
+      } else {
+        vat = 0;
+        root.dataset.cartVat = '0';
+        if (vatDisplay) vatDisplay.textContent = formatMoney(0);
+      }
+
+      var shipping = getSelectedShippingPrice();
+      var grandTotal = discounted + vat + shipping;
+
+      if (grandTotalDisplay) {
+        grandTotalDisplay.textContent = formatMoney(grandTotal);
+      }
+    }
+
+    function updateSummaryFromCart(cart) {
+      var subtotal = cart.items_subtotal_price || 0;
+      var discount = cart.total_discount || 0;
+
+      if (subtotalDisplay) subtotalDisplay.textContent = formatMoney(subtotal);
+
+      if (discountRow && discountDisplay) {
+        if (discount > 0) {
+          discountRow.classList.remove('hidden');
+          discountDisplay.textContent = '-' + formatMoney(discount);
+        } else {
+          discountRow.classList.add('hidden');
+        }
+      }
+
+      root.dataset.cartSubtotal = String(subtotal);
+      root.dataset.cartDiscount = String(discount);
+      recalculateOrderTotal();
+    }
+
+    function changeLineQuantity(lineKey, quantity) {
+      setUpdating(true);
+
+      return fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          id: lineKey,
+          quantity: quantity
+        })
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (cart) {
+          if (cart.status && cart.message) {
+            throw new Error(cart.description || cart.message);
+          }
+
+          if (cart.item_count === 0) {
+            window.location.reload();
+            return;
+          }
+
+          updateSummaryFromCart(cart);
+
+          if (quantity <= 0) {
+            var row = root.querySelector('[data-line-key="' + lineKey + '"]');
+            if (row) row.remove();
+            if (!root.querySelector('[data-cart-line]')) {
+              window.location.reload();
+            }
+            return;
+          }
+
+          var row = root.querySelector('[data-line-key="' + lineKey + '"]');
+          if (!row) {
+            window.location.reload();
+            return;
+          }
+
+          var qtyInput = row.querySelector('[data-cart-qty-input]');
+          var lineTotal = row.querySelector('[data-line-total]');
+          var lineItem = cart.items.find(function (item) {
+            return item.key === lineKey;
+          });
+
+          if (qtyInput && lineItem) qtyInput.value = lineItem.quantity;
+          if (lineTotal && lineItem) lineTotal.textContent = formatMoney(lineItem.final_line_price);
+        })
+        .catch(function () {
+          window.location.reload();
+        })
+        .finally(function () {
+          setUpdating(false);
+        });
+    }
+
+    if (linesRoot) {
+      linesRoot.addEventListener('click', function (event) {
+        var decBtn = event.target.closest('[data-cart-qty-dec]');
+        var incBtn = event.target.closest('[data-cart-qty-inc]');
+        var removeBtn = event.target.closest('[data-cart-remove]');
+        var row = event.target.closest('[data-cart-line]');
+        if (!row) return;
+
+        var lineKey = row.dataset.lineKey;
+        var qtyInput = row.querySelector('[data-cart-qty-input]');
+        var currentQty = parseInt(qtyInput ? qtyInput.value : '1', 10) || 1;
+
+        if (decBtn) {
+          changeLineQuantity(lineKey, Math.max(0, currentQty - 1));
+        }
+
+        if (incBtn) {
+          changeLineQuantity(lineKey, currentQty + 1);
+        }
+
+        if (removeBtn) {
+          changeLineQuantity(lineKey, 0);
+        }
+      });
+
+      linesRoot.addEventListener('change', function (event) {
+        var input = event.target.closest('[data-cart-qty-input]');
+        if (!input) return;
+
+        var row = input.closest('[data-cart-line]');
+        if (!row) return;
+
+        var quantity = parseInt(input.value, 10);
+        if (isNaN(quantity) || quantity < 0) quantity = 0;
+        changeLineQuantity(row.dataset.lineKey, quantity);
+      });
+    }
+
+    if (shippingRoot) {
+      shippingRoot.addEventListener('change', recalculateOrderTotal);
+
+      shippingRoot.addEventListener('click', function (event) {
+        var row = event.target.closest('[data-shipping-option]');
+        if (!row) return;
+
+        var radio = row.querySelector('input[type="radio"]');
+        if (!radio) return;
+
+        if (!radio.checked) {
+          radio.checked = true;
+        }
+
+        recalculateOrderTotal();
+      });
+    }
+
+    if (discountForm) {
+      discountForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var input = discountForm.querySelector('[data-cart-discount-input]');
+        var code = input ? input.value.trim() : '';
+        if (!code) return;
+        window.location.href = '/discount/' + encodeURIComponent(code) + '?redirect=' + encodeURIComponent(window.location.pathname);
+      });
+    }
+
+    recalculateOrderTotal();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Cart",
+  "tag": "section",
+  "class": "main-cart-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#172430"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Table columns"
+    },
+    {
+      "type": "text",
+      "id": "col_product_info",
+      "label": "Product info",
+      "default": "Product Info"
+    },
+    {
+      "type": "text",
+      "id": "col_price",
+      "label": "Price",
+      "default": "Price"
+    },
+    {
+      "type": "text",
+      "id": "col_quantity",
+      "label": "Quantity",
+      "default": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "col_total",
+      "label": "Total",
+      "default": "Total"
+    },
+    {
+      "type": "text",
+      "id": "col_remove",
+      "label": "Remove",
+      "default": "Remove"
+    },
+    {
+      "type": "header",
+      "content": "Promo code"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promo_code",
+      "label": "Show promo code",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "promo_title",
+      "label": "Title",
+      "default": "Promo Code"
+    },
+    {
+      "type": "text",
+      "id": "promo_placeholder",
+      "label": "Placeholder",
+      "default": "Coupon Code"
+    },
+    {
+      "type": "text",
+      "id": "promo_button_text",
+      "label": "Button text",
+      "default": "Apply"
+    },
+    {
+      "type": "header",
+      "content": "Order summary"
+    },
+    {
+      "type": "text",
+      "id": "subtotal_label",
+      "label": "Subtotal label",
+      "default": "Sub Total:"
+    },
+    {
+      "type": "text",
+      "id": "discount_label",
+      "label": "Discount label",
+      "default": "Coupon Discount:"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vat",
+      "label": "Show VAT estimate",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "vat_label",
+      "label": "VAT label",
+      "default": "VAT:"
+    },
+    {
+      "type": "range",
+      "id": "vat_percentage",
+      "label": "VAT percentage",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "total_label",
+      "label": "Total label",
+      "default": "Total:"
+    },
+    {
+      "type": "header",
+      "content": "Shipping options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_options",
+      "label": "Show shipping options",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shipping_free_label",
+      "label": "Free shipping label",
+      "default": "Free Shipping:"
+    },
+    {
+      "type": "text",
+      "id": "shipping_fast_label",
+      "label": "Fast shipping label",
+      "default": "Fast Shipping:"
+    },
+    {
+      "type": "number",
+      "id": "shipping_fast_price",
+      "label": "Fast shipping price",
+      "default": 10
+    },
+    {
+      "type": "text",
+      "id": "shipping_pickup_label",
+      "label": "Local pickup label",
+      "default": "Local Pickup:"
+    },
+    {
+      "type": "number",
+      "id": "shipping_pickup_price",
+      "label": "Local pickup price",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "continue_shopping_text",
+      "label": "Continue shopping text",
+      "default": "Continue Shopping"
+    },
+    {
+      "type": "url",
+      "id": "continue_shopping_url",
+      "label": "Continue shopping link"
+    },
+    {
+      "type": "text",
+      "id": "checkout_text",
+      "label": "Checkout text",
+      "default": "Checkout"
+    },
+    {
+      "type": "header",
+      "content": "Empty cart"
+    },
+    {
+      "type": "text",
+      "id": "empty_cart_title",
+      "label": "Title",
+      "default": "Your cart is empty"
+    },
+    {
+      "type": "text",
+      "id": "empty_cart_text",
+      "label": "Text",
+      "default": "Looks like you have not added anything to your cart yet."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart"
+    }
+  ]
+}
+{% endschema %}
