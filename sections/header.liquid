@@ -155,6 +155,24 @@
     .hdr-cart-item { max-height: 320px; overflow-y: auto; }
     .hdr-cart-item::-webkit-scrollbar { width: 4px; }
     .hdr-cart-item::-webkit-scrollbar-thumb { background: #C8815F; border-radius: 10px; }
+    .hdr_cart_popup,
+    .hdr_cart_popup .hdr-cart-item,
+    .hdr_cart_popup [data-cart-line] {
+        background-color: #172430;
+    }
+    .hdr_cart_popup img {
+        max-width: 70px !important;
+        width: 70px !important;
+        height: 70px !important;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+    .hdr_cart_popup .wishList_item_close {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .hdr_cart_popup .wishList_item_close:hover {
+        background-color: #C8815F;
+    }
 
     /* ===== Search Popup ===== */
     .search_popup.is-open {
@@ -197,16 +215,6 @@
         cursor: pointer;
     }
     .btn-sm { padding: 10px 20px; font-size: 14px; }
-    .btn-outline {
-        border: 1px solid #111827;
-        color: #111827;
-        background: transparent;
-    }
-    .btn-outline:hover {
-        background: #C8815F;
-        border-color: #C8815F;
-        color: #fff;
-    }
     .btn-theme-solid {
         background: #C8815F;
         color: #fff;
@@ -667,166 +675,31 @@
                 {% if section.settings.enable_cart %}
                 <!-- Cart -->
                 <div class="relative group">
-                    <button class="relative hdr_cart_btn">
+                    <button type="button" class="relative hdr_cart_btn flex items-center justify-center" aria-label="{{ section.settings.cart_title }}">
                         {% if section.settings.show_cart_count %}
-                        <span class="absolute w-[22px] h-[22px] bg-secondary -top-[10px] -right-[11px] rounded-full flex items-center justify-center text-xs leading-none text-white">{{ cart.item_count }}</span>
+                        <span class="absolute w-[22px] h-[22px] bg-secondary top-[-10px] right-[-11px] rounded-full flex items-center justify-center text-xs leading-none text-white{% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
                         {% endif %}
                         <svg class="fill-current text-title dark:text-white w-[18px] sm:w-[19px]" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M17.8284 5.7238H15.2408C14.9035 2.85886 12.4608 0.628906 9.50675 0.628906C6.55269 0.628906 4.11002 2.85886 3.7727 5.7238H1.18509C0.716102 5.7238 0.335938 6.10397 0.335938 6.57295V21.518C0.335938 21.987 0.716102 22.3671 1.18509 22.3671H17.8284C18.2974 22.3671 18.6776 21.987 18.6776 21.518V6.57295C18.6776 6.10397 18.2974 5.7238 17.8284 5.7238ZM9.50675 2.3272C11.5228 2.3272 13.2014 3.79857 13.5257 5.7238H5.48777C5.81214 3.79857 7.4907 2.3272 9.50675 2.3272ZM16.9793 20.6688H2.03424V7.4221H3.73253V9.96955C3.73253 10.4385 4.1127 10.8187 4.58168 10.8187C5.05067 10.8187 5.43083 10.4385 5.43083 9.96955V7.4221H13.5827V9.96955C13.5827 10.4385 13.9628 10.8187 14.4318 10.8187C14.9008 10.8187 15.281 10.4385 15.281 9.96955V7.4221H16.9793V20.6688Z"/>
                         </svg>
                     </button>
-                    <div class="hdr_cart_popup w-80 md:w-96 absolute z-50 top-full right-0 bg-white dark:bg-title p-5 md:p-[30px] border border-primary invisible opacity-0 transition-all duration-300">
-                        <h4 class="font-medium leading-none mb-4 text-xl md:text-2xl">
-                            {{ section.settings.cart_title }}
-                        </h4>
+                    <div
+                        class="hdr_cart_popup w-80 md:w-96 absolute z-50 top-full right-0 bg-[#172430] py-5 md:py-[30px] pl-5 md:pl-[30px] pr-[10px] md:pr-[15px] border border-primary invisible opacity-0 transition-all duration-300 mt-5"
+                        data-cart-popup
+                        data-money-format="{{ shop.money_format | escape }}"
+                    >
+                        <h4 class="font-medium leading-none text-white mb-4 text-xl md:text-2xl">{{ section.settings.cart_title }}</h4>
                         <div>
-                            <div class="hdr-cart-item">
-                                <div class="flex gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk group">
-                                    <a href="product-details.html" class="block">
-                                        <img class="w-[70px] md:w-auto h-full" src="./img/gallery/wishList-01.jpg" alt="cart">
-                                    </a>
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <span class="text-[14px] md:text-[15px] leading-none block">Sofa</span>
-                                            <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
-                                            <span class="text-[14px] md:text-[15px] leading-none block">$65.90</span>
-                                        </div>
-                                        <h6 class="text-base md:text-lg font-semibold !leading-none mt-[10px]">
-                                            <a href="product-details.html">
-                                                Modern Sofa Set
-                                            </a>
-                                        </h6>
-                                        <div class="inc-dec flex items-center gap-2 mt-4">
-                                            <div class="dec w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
-                                                <svg class="fill-current text-title dark:text-white" width="12" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10.4361 0.203613H12.0736L7.81774 0.203615H13.8729V1.80309H7.81774L3.50809 1.80309H1.87053L6.18017 1.80309H0.125V0.203615H6.18017L10.4361 0.203613Z"/>
-                                                </svg>
-                                            </div>
-                                            <input class="w-6 h-auto outline-none bg-transparent text-base mg:text-lg leading-none text-title dark:text-white text-center" type="text" value="1">
-                                            <div class="inc w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
-                                                <svg class="fill-current text-title dark:text-white" width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M6.18017 0.110352H7.81774V6.16553H13.8729V7.76501H7.81774V13.8963H6.18017V7.76501H0.125V6.16553H6.18017V0.110352Z"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group hover:bg-primary dark:hover:bg-primary opacity-0 group-hover:opacity-100 text-title dark:text-white duration-300 hover:text-white">
-                                        <svg class="fill-current" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="flex gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk group">
-                                    <a href="product-details.html" class="block">
-                                        <img class="w-[70px] md:w-auto h-full" src="./img/gallery/wishList-02.jpg" alt="cart">
-                                    </a>
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <span class="text-[14px] md:text-[15px] leading-none block">Interior</span>
-                                            <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
-                                            <span class="text-[14px] md:text-[15px] leading-none block">$99.90</span>
-                                        </div>
-                                        <h6 class="text-base md:text-lg font-semibold leading-none mt-[10px]">
-                                            <a href="product-details.html">Classic Chair with Vase</a>
-                                        </h6>
-                                        <div class="inc-dec flex items-center gap-2 mt-4">
-                                            <div class="dec w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
-                                                <svg class="fill-current text-title dark:text-white" width="12" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10.4361 0.203613H12.0736L7.81774 0.203615H13.8729V1.80309H7.81774L3.50809 1.80309H1.87053L6.18017 1.80309H0.125V0.203615H6.18017L10.4361 0.203613Z"/>
-                                                </svg>
-                                            </div>
-                                            <input class="w-6 h-auto outline-none bg-transparent text-base mg:text-lg leading-none text-title dark:text-white text-center" type="text" value="1">
-                                            <div class="inc w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
-                                                <svg class="fill-current text-title dark:text-white" width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M6.18017 0.110352H7.81774V6.16553H13.8729V7.76501H7.81774V13.8963H6.18017V7.76501H0.125V6.16553H6.18017V0.110352Z"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group hover:bg-primary dark:hover:bg-primary opacity-0 group-hover:opacity-100 text-title dark:text-white duration-300 hover:text-white">
-                                        <svg class="fill-current" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="flex gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk group">
-                                    <a href="product-details.html" class="block">
-                                        <img class="w-[70px] md:w-auto h-full" src="./img/gallery/wishList-03.jpg" alt="cart">
-                                    </a>
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <span class="text-[14px] md:text-[15px] leading-none block">Lamp</span>
-                                            <span class="w-[6px] h-[6px] rounded-full bg-primary"></span>
-                                            <span class="text-[14px] md:text-[15px] leading-none block">$30.90</span>
-                                        </div>
-                                        <h6 class="text-base md:text-lg font-semibold leading-none mt-[10px]">
-                                            <a href="product-details.html">
-                                                Luxury Hanging Lamp
-                                            </a>
-                                        </h6>
-                                        <div class="inc-dec flex items-center gap-2 mt-4">
-                                            <div class="dec w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
-                                                <svg class="fill-current text-title dark:text-white" width="12" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10.4361 0.203613H12.0736L7.81774 0.203615H13.8729V1.80309H7.81774L3.50809 1.80309H1.87053L6.18017 1.80309H0.125V0.203615H6.18017L10.4361 0.203613Z"/>
-                                                </svg>
-                                            </div>
-                                            <input class="w-6 h-auto outline-none bg-transparent text-base mg:text-lg leading-none text-title dark:text-white text-center" type="text" value="1">
-                                            <div class="inc w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
-                                                <svg class="fill-current text-title dark:text-white" width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M6.18017 0.110352H7.81774V6.16553H13.8729V7.76501H7.81774V13.8963H6.18017V7.76501H0.125V6.16553H6.18017V0.110352Z"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group hover:bg-primary dark:hover:bg-primary opacity-0 group-hover:opacity-100 text-title dark:text-white duration-300 hover:text-white">
-                                        <svg class="fill-current" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="flex gap-[15px] relative pb-[15px] mb-[15px] border-b border-bdr-clr dark:border-bdr-clr-drk group">
-                                    <a href="product-details.html" class="block">
-                                        <img class="w-[70px] md:w-auto h-full" src="./img/gallery/wishList-04.jpg" alt="cart">
-                                    </a>
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <span class="text-[14px] md:text-[15px] leading-none block">Vase</span>
-                                            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            <span class="text-[14px] md:text-[15px] leading-none block">$20.00</span>
-                                        </div>
-                                        <h6 class="text-base md:text-lg font-semibold leading-none mt-2.5">
-                                            <a href="product-details.html">
-                                                Premium Quality Vase
-                                            </a>
-                                        </h6>
-                                        <div class="inc-dec flex items-center gap-2 mt-4">
-                                            <div class="dec w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
-                                                <svg class="fill-current text-title dark:text-white" width="12" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10.4361 0.203613H12.0736L7.81774 0.203615H13.8729V1.80309H7.81774L3.50809 1.80309H1.87053L6.18017 1.80309H0.125V0.203615H6.18017L10.4361 0.203613Z"/>
-                                                </svg>
-                                            </div>
-                                            <input class="w-6 h-auto outline-none bg-transparent text-base mg:text-lg leading-none text-title dark:text-white text-center" type="text" value="1">
-                                            <div class="inc w-6 h-6 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center">
-                                                <svg class="fill-current text-title dark:text-white" width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M6.18017 0.110352H7.81774V6.16553H13.8729V7.76501H7.81774V13.8963H6.18017V7.76501H0.125V6.16553H6.18017V0.110352Z"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="wishList_item_close absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-title dark:bg-white bg-opacity-10 dark:bg-opacity-10 group hover:bg-primary dark:hover:bg-primary opacity-0 group-hover:opacity-100 text-title dark:text-white duration-300 hover:text-white">
-                                        <svg class="fill-current" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.636719 1.56306L1.56306 0.636719L4.98839 4.06204L8.41371 0.636719L9.31851 1.54152L5.89319 4.96685L9.3616 8.43526L8.43526 9.3616L4.96685 5.89319L1.54152 9.31851L0.636719 8.41371L4.06204 4.98839L0.636719 1.56306Z"/>
-                                        </svg>
-                                    </div>
-                                </div>
+                            <div class="pr-4 md:pr-5 hdr-cart-item" data-cart-list>
+                                <p class="hidden text-sm text-white/70 py-2" data-cart-empty>{{ section.settings.empty_cart_text }}</p>
                             </div>
-                            <div class="pt-5 md:pt-7.5 mt-5 md:mt-7.5 border-t border-bdr-clr dark:border-bdr-clr-drk">
-                                <h4 class="mb-5 md:mb-7.5 font-medium leading-none! text-lg md:text-xl text-right">{{ section.settings.subtotal_text }} : {{ cart.total_price | money }}</h4>
+                            <div class="pt-5 md:pt-7.5 pr-4 md:pr-5{% if cart.item_count == 0 %} hidden{% endif %}" data-cart-footer>
+                                <h4 class="mb-5 md:mb-7.5 font-medium leading-none! text-lg md:text-xl text-right text-white">{{ section.settings.subtotal_text }} : <span data-cart-subtotal>{{ cart.total_price | money }}</span></h4>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <a href="{{ routes.cart_url }}" class="btn btn-outline btn-sm" data-text="{{ section.settings.view_cart_text }}">
+                                    <a href="{{ routes.cart_url }}" class="btn btn-theme-outline btn-sm" data-text="{{ section.settings.view_cart_text }}">
                                         <span>{{ section.settings.view_cart_text }}</span>
                                     </a>
-                                    <a href="/checkout" class="btn btn-theme-solid btn-sm" data-text="{{ section.settings.checkout_text }}">
+                                    <a href="{{ routes.root_url }}/checkout" class="btn btn-solid-primary" data-text="{{ section.settings.checkout_text }}">
                                         <span>{{ section.settings.checkout_text }}</span>
                                     </a>
                                 </div>
@@ -1266,6 +1139,12 @@
       "id": "cart_title",
       "label": "Cart Popup Title",
       "default": "Cart List"
+    },
+    {
+      "type": "text",
+      "id": "empty_cart_text",
+      "label": "Empty Cart Message",
+      "default": "Your cart is empty."
     },
     {
       "type": "text",

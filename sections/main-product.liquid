@@ -279,26 +279,6 @@
     color: #fff;
   }
 
-  .main-product-section .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 32px;
-    background: transparent;
-    color: #fff;
-    border: 1px solid #fff;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-
-  .main-product-section .btn-outline:hover {
-    background: var(--color-primary, #c8815f);
-    border-color: var(--color-primary, #c8815f);
-    color: #fff;
-  }
-
   .main-product-section .inc-dec .dec,
   .main-product-section .inc-dec .inc {
     cursor: pointer;
@@ -708,6 +688,12 @@
             });
           })
           .then(function () {
+            if (window.FurnixarCart && typeof window.FurnixarCart.addAndOpen === 'function') {
+              return window.FurnixarCart.addAndOpen().then(function () {
+                if (submitBtn) submitBtn.disabled = !(variant && variant.available);
+                if (submitText) submitText.textContent = defaultSubmitText;
+              });
+            }
             window.location.href = cartUrl;
           })
           .catch(function (error) {
