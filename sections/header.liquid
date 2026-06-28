@@ -529,7 +529,7 @@
 
 <header class="header-area default-header relative z-50 bg-[#172430]" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
     <div class="container-fluid">
-        <header class="flex items-center justify-between gap-x-6 max-w-[1720px] mx-auto relative">
+        <div class="flex items-center justify-between gap-x-6 max-w-[1720px] mx-auto relative">
             <!-- Logo -->
             <a href="{{ routes.root_url }}" style="flex-shrink: 0;">
                 {% if section.settings.logo != blank %}
@@ -786,6 +786,7 @@
                         </div>
                     </div>
                 </div>
+                </div>
                 {% endif %}
                 
                 {% if section.settings.enable_cart %}
@@ -988,6 +989,7 @@
                     {% endif %}
                 </label>
                 {% endif %}
+        </div>
         </div>
     </div>
 </header>
