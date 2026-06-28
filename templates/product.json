@@ -12,7 +12,7 @@
     "product_banner": {
       "type": "product-bennar",
       "settings": {
-        "background_color": "#1E2A35",
+        "background_color": "#1e2a35",
         "text_color": "#ffffff",
         "active_text_color": "#c8815f",
         "link_hover_color": "#c8815f",
@@ -28,7 +28,7 @@
         "sale_end_date": "2026-12-31 23:59",
         "fallback_description": "Experience the epitome of relaxation with our Classic Relaxable Chair. Crafted with plush cushioning and ergonomic design, it offers unparalleled comfort for lounging or reading.",
         "padding_top": 50,
-        "padding_bottom": 50,
+        "padding_bottom": 0,
         "tabs_padding_top": 50,
         "tabs_padding_bottom": 50,
         "tab_description_label": "Description",

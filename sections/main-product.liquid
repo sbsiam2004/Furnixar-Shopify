@@ -356,6 +356,7 @@
     var quantityInput = root.querySelector('[data-quantity-input]');
     var decBtn = root.querySelector('[data-quantity-dec]');
     var incBtn = root.querySelector('[data-quantity-inc]');
+    var wishlistBtn = root.querySelector('[data-add-wishlist]');
 
     function getVisibleSelectedOptions() {
       var selected = {};
@@ -536,6 +537,24 @@
       }
 
       if (skuEl) skuEl.textContent = variant.sku || 'N/A';
+
+      if (wishlistBtn) {
+        wishlistBtn.dataset.variantId = String(variant.id);
+        wishlistBtn.dataset.productPrice = String(variant.price);
+
+        if (productMedia.length > 0) {
+          var wishlistMediaId = getMediaIdFromVariant(variant);
+          var wishlistMedia = wishlistMediaId
+            ? productMedia.find(function (item) {
+                return String(item.id) === String(wishlistMediaId);
+              })
+            : productMedia[0];
+
+          if (wishlistMedia && wishlistMedia.thumb) {
+            wishlistBtn.dataset.productImage = wishlistMedia.thumb;
+          }
+        }
+      }
 
       if (submitBtn && submitText) {
         if (variant.available) {

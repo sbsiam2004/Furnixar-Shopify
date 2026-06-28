@@ -1,3 +1,12 @@
+{%- liquid
+  assign wishlist_variant = product.selected_or_first_available_variant
+  assign wishlist_image = blank
+
+  if product.featured_image
+    assign wishlist_image = product.featured_image | image_url: width: 140
+  endif
+-%}
+
 <div class="py-4 sm:py-6 border-b border-white/15">
   <div class="inc-dec flex items-center gap-2">
     <button type="button" class="dec w-8 h-8 bg-[#E8E9EA] dark:bg-dark-secondary flex items-center justify-center" data-quantity-dec aria-label="Decrease quantity">
@@ -24,8 +33,20 @@
     <button type="submit" class="btn btn-solid" data-text="Add to Cart" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
       <span>{% if product.selected_or_first_available_variant.available %}Add to Cart{% else %}Sold out{% endif %}</span>
     </button>
-    <a href="{{ product.url }}" class="btn btn-outline" data-text="Add to Wishlist">
+    <button
+      type="button"
+      class="btn btn-outline"
+      data-text="Add to Wishlist"
+      data-add-wishlist
+      data-product-id="{{ product.id }}"
+      data-variant-id="{{ wishlist_variant.id }}"
+      data-product-title="{{ product.title | escape }}"
+      data-product-url="{{ product.url }}"
+      data-product-type="{{ product.type | escape }}"
+      data-product-price="{{ wishlist_variant.price }}"
+      {% if wishlist_image != blank %}data-product-image="{{ wishlist_image }}"{% endif %}
+    >
       <span>Add to Wishlist</span>
-    </a>
+    </button>
   </div>
 </div>
